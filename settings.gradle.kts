@@ -8,3 +8,4 @@
  */
 
 rootProject.name = "kotlin-portfoliosimulation"
+include("portfoliosimulation", "portfoliosimulation-contract", "portfoliosimulation-backend", "portfoliosimulation-frontend")
