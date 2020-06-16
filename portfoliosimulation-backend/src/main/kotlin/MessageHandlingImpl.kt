@@ -7,9 +7,17 @@ import de.muspellheim.portfoliosimulation.contract.data.domain.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.commands.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.queries.*
 
-class MessageHandlingImpl(private val repo: PortfolioRepository = PortfolioRepositoryImpl()) : MessageHandling {
+class MessageHandlingImpl(
+    private val repo: PortfolioRepository = PortfolioRepositoryImpl(),
+    private val ex: StockExchangeProvider = StockExchangeProviderImpl()
+) : MessageHandling {
     override fun handle(command: UpdatePortfolioCommand): CommandStatus {
-        TODO("Not yet implemented")
+        val portfolio = repo.load()
+        val currentPrice = ex.getPrice(portfolio.stockSymbols)
+        // Convert currency if needed; left out for simplicity
+        portfolio.update(currentPrice)
+        repo.store(portfolio)
+        return Success()
     }
 
     override fun handle(query: PortfolioQuery): PortfolioQueryResult {
