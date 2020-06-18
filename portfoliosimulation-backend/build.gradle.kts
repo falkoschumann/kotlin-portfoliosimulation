@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api(project(":portfoliosimulation-contract"))
+    implementation("org.glassfish:javax.json:1.1.4")
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
