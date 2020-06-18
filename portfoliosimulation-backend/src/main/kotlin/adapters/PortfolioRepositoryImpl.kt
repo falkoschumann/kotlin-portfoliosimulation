@@ -4,9 +4,11 @@ import de.muspellheim.portfoliosimulation.contract.*
 import de.muspellheim.portfoliosimulation.contract.data.domain.*
 import java.nio.file.*
 import java.time.*
+import java.time.format.*
 import kotlin.streams.*
 
-class PortfolioRepositoryImpl(private val filepath: String = "portfolio.csv") : PortfolioRepository {
+class PortfolioRepositoryImpl(private val filepath: String = "portfolio.csv") :
+    PortfolioRepository {
     override fun load(): Portfolio {
         val path = Paths.get(filepath)
         if (Files.exists(path).not()) return Portfolio()
@@ -33,6 +35,14 @@ class PortfolioRepositoryImpl(private val filepath: String = "portfolio.csv") : 
     }
 
     override fun store(portfolio: Portfolio) {
-        TODO("Not yet implemented")
+        val lines = portfolio.entries.map(this::mapToLine)
+        val path = Paths.get(filepath)
+        Files.write(path, lines)
+    }
+
+    private fun mapToLine(e: Portfolio.Stock): String {
+        return "${e.name};${e.symbol};${e.currency};${e.bought.format(DateTimeFormatter.ISO_DATE)};${e.qty};${e.buyingPrice};${e.currentPrice};${e.lastUpdated.format(
+            DateTimeFormatter.ISO_DATE
+        )}"
     }
 }

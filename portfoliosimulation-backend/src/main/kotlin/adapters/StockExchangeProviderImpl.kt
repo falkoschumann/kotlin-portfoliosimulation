@@ -12,6 +12,7 @@ class StockExchangeProviderImpl(private val av: AlphaVantageProvider = AlphaVant
                 val quote = av.getQuote(symbol)
                 prices.add(Pair(symbol, quote.price))
             } catch (ex: Exception) {
+                System.err.println(ex)
                 prices.add(Pair(symbol, 0.0))
             }
         }
