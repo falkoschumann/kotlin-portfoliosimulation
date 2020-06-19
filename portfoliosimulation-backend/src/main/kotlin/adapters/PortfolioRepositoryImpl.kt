@@ -18,7 +18,7 @@ class PortfolioRepositoryImpl(private val filepath: String = "portfolio.csv") :
 
         val skipHeader = if (lines[0].startsWith("Name")) 1L else 0L
         val records = lines.stream().skip(skipHeader).map { it.split(";") }.toList()
-        return Portfolio(entries = records.map(this::mapToEntry))
+        return Portfolio(entries = records.map(this::mapToEntry).toMutableList())
     }
 
     private fun mapToEntry(record: List<String>): Portfolio.Stock {

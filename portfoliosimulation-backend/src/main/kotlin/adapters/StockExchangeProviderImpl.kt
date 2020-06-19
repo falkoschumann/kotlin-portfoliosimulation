@@ -25,7 +25,8 @@ class StockExchangeProviderImpl(private val av: AlphaVantageProvider = AlphaVant
         fun getQuote(symbol: String): Double =
             try {
                 av.getQuote(symbol).price
-            } catch (e: Exception) {
+            } catch (ex: Exception) {
+                System.err.println(ex)
                 0.0;
             }
 

@@ -10,7 +10,7 @@ class PortfolioManagerTest {
     @Test
     fun `calculate returns`() {
         val portfolio = Portfolio(
-            listOf(
+            mutableListOf(
                 Portfolio.Stock(
                     symbol = "S1",
                     qty = 5,

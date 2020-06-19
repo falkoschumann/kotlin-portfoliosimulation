@@ -22,7 +22,7 @@ class MessageHandlingImplTest {
     }
 
     @Test
-    //@Ignore("Needs online access")
+    @Ignore("Needs online access")
     fun `update portfolio`() {
         Files.copy(
             Paths.get("src/test/resources/portfoliotoupdate.csv"),
@@ -44,7 +44,7 @@ class MessageHandlingImplTest {
     }
 
     @Test
-    //@Ignore("Requires access to online service")
+    @Ignore("Requires access to online service")
     fun `find candidates`() {
         val ex = StockExchangeProviderImpl()
         val sut = MessageHandlingImpl(ex = ex)
