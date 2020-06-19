@@ -25,8 +25,8 @@ class MessageHandlingImpl(
         val portfolioReturns = calculateReturns(portfolio)
 
         fun result(): PortfolioQueryResult {
-            fun map(e: Portfolio.Stock): PortfolioQueryResult.StockInfo {
-                return PortfolioQueryResult.StockInfo(
+            fun map(e: Portfolio.Stock): PortfolioQueryResult.StockInfo =
+                PortfolioQueryResult.StockInfo(
                     name = e.name,
                     symbol = e.symbol,
                     currency = e.currency,
@@ -40,7 +40,6 @@ class MessageHandlingImpl(
                     returnValue = portfolioReturns.returns.getValue(e.symbol).returnValue,
                     rateOfReturn = portfolioReturns.returns.getValue(e.symbol).rateOfReturn
                 )
-            }
 
             return PortfolioQueryResult(
                 portfolioValue = portfolio.entries.map { it.qty * it.currentPrice }.sum(),
@@ -57,7 +56,19 @@ class MessageHandlingImpl(
     }
 
     override fun handle(query: CandidateStocksQuery): CandidateStocksQueryResult {
-        TODO("Not yet implemented")
+        val candidates = ex.findCandidates(query.pattern)
+
+        fun map(candidate: CandidateStockInfo): CandidateStocksQueryResult.CandidateStock =
+            CandidateStocksQueryResult.CandidateStock(
+                name = candidate.name,
+                symbol = candidate.symbol,
+                currency = candidate.currency,
+                price = candidate.price
+            )
+
+        return CandidateStocksQueryResult(
+            candidates = candidates.map { map(it) }
+        )
     }
 
     override fun handle(command: SellStockCommand): CommandStatus {

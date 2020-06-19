@@ -42,4 +42,20 @@ class MessageHandlingImplTest {
             assertTrue(before.entries[i].lastUpdated < after.entries[i].lastUpdated)
         }
     }
+
+    @Test
+    //@Ignore("Requires access to online service")
+    fun `find candidates`() {
+        val ex = StockExchangeProviderImpl()
+        val sut = MessageHandlingImpl(ex = ex)
+
+        val result = sut.handle(CandidateStocksQuery(pattern = "Apple"))
+
+        assertTrue(result.candidates.isNotEmpty())
+
+        println("Candidates found: ${result.candidates.size}")
+        for (r in result.candidates) {
+            println("${r.name} (${r.symbol}): ${r.price} ${r.currency}")
+        }
+    }
 }

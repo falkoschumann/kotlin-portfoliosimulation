@@ -20,6 +20,26 @@ class StockExchangeProviderImpl(private val av: AlphaVantageProvider = AlphaVant
     }
 
     override fun findCandidates(pattern: String): List<CandidateStockInfo> {
-        TODO("Not yet implemented")
+        val stockInfos = av.findMatchingStocks(pattern)
+
+        fun getQuote(symbol: String): Double =
+            try {
+                av.getQuote(symbol).price
+            } catch (e: Exception) {
+                0.0;
+            }
+
+        fun compilePrices(symbols: List<String>): List<Double> = symbols.map { getQuote(it) }
+
+        val stockPrices = compilePrices(stockInfos.map { it.symbol })
+        val candidates = stockInfos.zip(stockPrices) { si: StockInfo, p: Double ->
+            CandidateStockInfo(
+                name = si.name,
+                symbol = si.symbol,
+                currency = si.currency,
+                price = p
+            )
+        }
+        return candidates.filter { it.price > 0 }
     }
 }

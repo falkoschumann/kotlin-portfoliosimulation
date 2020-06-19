@@ -38,6 +38,27 @@ class AlphaVantageProviderImpl : AlphaVantageProvider {
     }
 
     override fun findMatchingStocks(pattern: String): List<StockInfo> {
-        TODO("Not yet implemented")
+        val endpointUrl = "${baseUrl}&function=SYMBOL_SEARCH&keywords=${pattern}"
+        val client = HttpClient.newHttpClient()
+        val request = HttpRequest.newBuilder(URI(endpointUrl)).GET().build()
+        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+        val queryResultText = response.body()
+        if (response.statusCode() != 200) throw Exception(queryResultText)
+        val quote = Json.createReader(StringReader(queryResultText)).readObject()
+        val quoteResultObj =
+            quote["bestMatches"]?.asJsonArray() ?: throw Exception(quote["Note"].toString())
+
+        val stockInfos = mutableListOf<StockInfo>()
+        for (item in quoteResultObj) {
+            val itemProperties = item.asJsonObject()
+            val info = StockInfo(
+                symbol = itemProperties.getString("1. symbol"),
+                name = itemProperties.getString("2. name"),
+                region = itemProperties.getString("4. region"),
+                currency = itemProperties.getString("8. currency")
+            )
+            stockInfos.add(info)
+        }
+        return stockInfos.toList()
     }
 }
