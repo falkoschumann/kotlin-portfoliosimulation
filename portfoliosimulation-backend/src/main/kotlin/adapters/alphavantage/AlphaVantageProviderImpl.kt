@@ -19,7 +19,6 @@ class AlphaVantageProviderImpl : AlphaVantageProvider {
 
     override fun getQuote(symbol: String): StockPrice {
         val endpointUrl = "${baseUrl}&function=GLOBAL_QUOTE&symbol=${symbol}"
-        println(endpointUrl)
         val client = HttpClient.newHttpClient()
         val request = HttpRequest.newBuilder(URI(endpointUrl)).GET().build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
@@ -40,7 +39,6 @@ class AlphaVantageProviderImpl : AlphaVantageProvider {
 
     override fun findMatchingStocks(pattern: String): List<StockInfo> {
         val endpointUrl = "${baseUrl}&function=SYMBOL_SEARCH&keywords=${pattern}"
-        println(endpointUrl)
         val client = HttpClient.newHttpClient()
         val request = HttpRequest.newBuilder(URI(endpointUrl)).GET().build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
