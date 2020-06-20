@@ -6,6 +6,7 @@ import de.muspellheim.portfoliosimulation.contract.*
 import de.muspellheim.portfoliosimulation.contract.data.domain.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.commands.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.queries.*
+import java.time.*
 
 class MessageHandlingImpl(
     private val repo: PortfolioRepository = PortfolioRepositoryImpl(),
@@ -52,7 +53,22 @@ class MessageHandlingImpl(
     }
 
     override fun handle(command: BuyStockCommand): CommandStatus {
-        TODO("Not yet implemented")
+        val portfolio = repo.load()
+
+        val newStock = Portfolio.Stock(
+            name = command.stockName,
+            symbol = command.stockSymbol,
+            currency = command.stockPriceCurrency,
+            qty = command.qty,
+            buyingPrice= command.stockPrice,
+            bought = command.bought,
+            currentPrice = command.stockPrice,
+            lastUpdated = LocalDate.now()
+        )
+        portfolio.entries.add(newStock)
+
+        repo.store(portfolio)
+        return Success()
     }
 
     override fun handle(query: CandidateStocksQuery): CandidateStocksQueryResult {

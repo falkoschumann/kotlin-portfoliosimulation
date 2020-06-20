@@ -19,6 +19,7 @@ class AlphaVantageProviderImpl : AlphaVantageProvider {
 
     override fun getQuote(symbol: String): StockPrice {
         val endpointUrl = "${baseUrl}&function=GLOBAL_QUOTE&symbol=${symbol}"
+        println(endpointUrl)
         val client = HttpClient.newHttpClient()
         val request = HttpRequest.newBuilder(URI(endpointUrl)).GET().build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
@@ -26,7 +27,7 @@ class AlphaVantageProviderImpl : AlphaVantageProvider {
         if (response.statusCode() != 200) throw Exception(quoteText)
         val quote = Json.createReader(StringReader(quoteText)).readObject()
         val quoteObj =
-            quote["Global Quote"]?.asJsonObject() ?: throw Exception(quote["Note"].toString())
+            quote["Global Quote"]?.asJsonObject() ?: throw IOException(quote.toString())
         return StockPrice(
             quoteObj.getString("01. symbol"),
             quoteObj.getString("05. price").toDouble()
@@ -39,6 +40,7 @@ class AlphaVantageProviderImpl : AlphaVantageProvider {
 
     override fun findMatchingStocks(pattern: String): List<StockInfo> {
         val endpointUrl = "${baseUrl}&function=SYMBOL_SEARCH&keywords=${pattern}"
+        println(endpointUrl)
         val client = HttpClient.newHttpClient()
         val request = HttpRequest.newBuilder(URI(endpointUrl)).GET().build()
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
@@ -46,7 +48,7 @@ class AlphaVantageProviderImpl : AlphaVantageProvider {
         if (response.statusCode() != 200) throw Exception(queryResultText)
         val quote = Json.createReader(StringReader(queryResultText)).readObject()
         val quoteResultObj =
-            quote["bestMatches"]?.asJsonArray() ?: throw Exception(quote["Note"].toString())
+            quote["bestMatches"]?.asJsonArray() ?: throw IOException(quote.toString())
 
         val stockInfos = mutableListOf<StockInfo>()
         for (item in quoteResultObj) {

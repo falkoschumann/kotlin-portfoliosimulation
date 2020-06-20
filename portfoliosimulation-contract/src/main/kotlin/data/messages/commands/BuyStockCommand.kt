@@ -1,6 +1,6 @@
 package de.muspellheim.portfoliosimulation.contract.data.messages.commands
 
-import java.time.LocalDateTime
+import java.time.*
 
 data class BuyStockCommand(
     val stockName: String,
@@ -8,5 +8,5 @@ data class BuyStockCommand(
     val stockPriceCurrency: String,
     val qty: Int,
     val stockPrice: Double,
-    val bought: LocalDateTime
+    val bought: LocalDate
 )
