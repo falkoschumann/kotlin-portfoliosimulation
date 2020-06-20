@@ -60,7 +60,7 @@ class MessageHandlingImpl(
             symbol = command.stockSymbol,
             currency = command.stockPriceCurrency,
             qty = command.qty,
-            buyingPrice= command.stockPrice,
+            buyingPrice = command.stockPrice,
             bought = command.bought,
             currentPrice = command.stockPrice,
             lastUpdated = LocalDate.now()
@@ -88,10 +88,22 @@ class MessageHandlingImpl(
     }
 
     override fun handle(command: SellStockCommand): CommandStatus {
-        TODO("Not yet implemented")
+        val portfolio = repo.load()
+
+        portfolio.remove(command.stockSymbol)
+
+        repo.store(portfolio)
+        return Success()
     }
 
     override fun handle(query: PortfolioStockQuery): PortfolioStockQueryResult {
-        TODO("Not yet implemented")
+        val portfolio = repo.load()
+        val matching = portfolio.find(query.pattern)
+
+        fun map(match: Portfolio.Stock): Pair<String, String> = Pair(match.name, match.symbol)
+
+        return PortfolioStockQueryResult(
+            matchingStocks = matching.map { map(it) }
+        )
     }
 }

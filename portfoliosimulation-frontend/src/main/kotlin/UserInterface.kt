@@ -60,7 +60,24 @@ class UserInterface(private val mh: MessageHandling) {
                     )
                 }
                 "S" -> {
-                    TODO()
+                    println("Identification?: ")
+                    var input = readLine()!!
+                    if (input == "") continue@loop
+
+                    val candidates = mh.handle(PortfolioStockQuery(input))
+
+                    displaySellCandidates(candidates)
+
+                    println("Index of stock to sell?: ")
+                    input = readLine()!!
+                    if (input == "") continue@loop
+                    val index = input.toInt() - 1
+
+                    val toSell = candidates.matchingStocks[index]
+
+                    mh.handle(SellStockCommand(toSell.second))
+
+                    println("Sold '${toSell.first} (${toSell.second})'!")
                 }
                 null -> return
             }
@@ -75,6 +92,12 @@ class UserInterface(private val mh: MessageHandling) {
     private fun displayBuyCandidates(candidates: List<CandidateStocksQueryResult.CandidateStock>) {
         for (i in candidates.indices) {
             println("${i + 1}. ${candidates[i].name} (${candidates[i].symbol}): ${candidates[i].price} ${candidates[i].currency}")
+        }
+    }
+
+    private fun displaySellCandidates(candidatesMatchingStocks: PortfolioStockQueryResult) {
+        for (i in candidatesMatchingStocks.matchingStocks.indices) {
+            println("${i + 1}. ${candidatesMatchingStocks.matchingStocks[i].first} (${candidatesMatchingStocks.matchingStocks[i].second})")
         }
     }
 

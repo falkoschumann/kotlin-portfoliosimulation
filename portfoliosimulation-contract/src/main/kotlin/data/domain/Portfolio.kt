@@ -6,6 +6,14 @@ data class Portfolio(val entries: MutableList<Stock> = mutableListOf()) {
     val stockSymbols: List<String>
         get() = entries.map { it.symbol }.distinct()
 
+    fun find(pattern: String): List<Stock> {
+        return entries.filter { it.name.contains(pattern, true) || it.symbol.contains(pattern, true) }
+    }
+
+    fun remove(symbol: String) {
+        entries.removeIf { it.symbol == symbol }
+    }
+
     fun update(prices: List<Pair<String, Double>>) {
         prices.forEach { update(it.first, it.second) }
     }
