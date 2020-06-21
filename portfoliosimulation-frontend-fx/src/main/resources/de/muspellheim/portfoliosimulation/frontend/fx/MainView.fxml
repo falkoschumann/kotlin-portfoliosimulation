@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.MainViewController">
+    <TableView items="${controller.stocks}" VBox.vgrow="ALWAYS">
+        <placeholder>
+            <Label text="Empty portfolio!" />
+        </placeholder>
+        <columns>
+            <TableColumn text="Name">
+                <cellValueFactory>
+                    <PropertyValueFactory property="name" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Symbol">
+                <cellValueFactory>
+                    <PropertyValueFactory property="symbol" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Currency">
+                <cellValueFactory>
+                    <PropertyValueFactory property="currency" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Qty">
+                <cellValueFactory>
+                    <PropertyValueFactory property="qty" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Buying Price">
+                <cellValueFactory>
+                    <PropertyValueFactory property="buyingPrice" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Buying Value">
+                <cellValueFactory>
+                    <PropertyValueFactory property="buyingValue" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Current Price">
+                <cellValueFactory>
+                    <PropertyValueFactory property="currentPrice" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Current Value">
+                <cellValueFactory>
+                    <PropertyValueFactory property="currentValue" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Return">
+                <cellValueFactory>
+                    <PropertyValueFactory property="returnValue" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Rate of Return">
+                <cellValueFactory>
+                    <PropertyValueFactory property="rateOfReturn" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+    <HBox alignment="CENTER_LEFT" spacing="5.0">
+        <Label text="Portfolio value:" />
+        <TextField editable="false" text="${controller.portfolioValue}" />
+        <Label text="Portfolio rate of return:" />
+        <TextField editable="false" text="${controller.portfolioRateOfReturn}" />
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </padding>
+    </HBox>
+</VBox>
