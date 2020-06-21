@@ -26,21 +26,20 @@ class MessageHandlingImpl(
         val portfolioReturns = calculateReturns(portfolio)
 
         fun result(): PortfolioQueryResult {
-            fun map(e: Portfolio.Stock): PortfolioQueryResult.StockInfo =
-                PortfolioQueryResult.StockInfo(
-                    name = e.name,
-                    symbol = e.symbol,
-                    currency = e.currency,
-                    qty = e.qty,
-                    buyingPrice = e.buyingPrice,
-                    currentPrice = e.currentPrice,
+            fun map(e: Portfolio.Stock) = PortfolioQueryResult.StockInfo(
+                name = e.name,
+                symbol = e.symbol,
+                currency = e.currency,
+                qty = e.qty,
+                buyingPrice = e.buyingPrice,
+                currentPrice = e.currentPrice,
 
-                    buyingValue = e.qty * e.buyingPrice,
-                    currentValue = e.qty * e.currentPrice,
+                buyingValue = e.qty * e.buyingPrice,
+                currentValue = e.qty * e.currentPrice,
 
-                    returnValue = portfolioReturns.returns.getValue(e.symbol).returnValue,
-                    rateOfReturn = portfolioReturns.returns.getValue(e.symbol).rateOfReturn
-                )
+                returnValue = portfolioReturns.returns.getValue(e.symbol).returnValue,
+                rateOfReturn = portfolioReturns.returns.getValue(e.symbol).rateOfReturn
+            )
 
             return PortfolioQueryResult(
                 portfolioValue = portfolio.entries.map { it.qty * it.currentPrice }.sum(),
@@ -74,13 +73,12 @@ class MessageHandlingImpl(
     override fun handle(query: CandidateStocksQuery): CandidateStocksQueryResult {
         val candidates = ex.findCandidates(query.pattern)
 
-        fun map(candidate: CandidateStockInfo): CandidateStocksQueryResult.CandidateStock =
-            CandidateStocksQueryResult.CandidateStock(
-                name = candidate.name,
-                symbol = candidate.symbol,
-                currency = candidate.currency,
-                price = candidate.price
-            )
+        fun map(candidate: CandidateStockInfo) = CandidateStocksQueryResult.CandidateStock(
+            name = candidate.name,
+            symbol = candidate.symbol,
+            currency = candidate.currency,
+            price = candidate.price
+        )
 
         return CandidateStocksQueryResult(
             candidates = candidates.map { map(it) }
@@ -100,7 +98,7 @@ class MessageHandlingImpl(
         val portfolio = repo.load()
         val matching = portfolio.find(query.pattern)
 
-        fun map(match: Portfolio.Stock): Pair<String, String> = Pair(match.name, match.symbol)
+        fun map(match: Portfolio.Stock) = Pair(match.name, match.symbol)
 
         return PortfolioStockQueryResult(
             matchingStocks = matching.map { map(it) }

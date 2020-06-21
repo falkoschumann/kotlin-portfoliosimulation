@@ -21,18 +21,16 @@ class PortfolioRepositoryImpl(private val filepath: String = "portfolio.csv") :
         return Portfolio(entries = records.map(this::mapToEntry).toMutableList())
     }
 
-    private fun mapToEntry(record: List<String>): Portfolio.Stock {
-        return Portfolio.Stock(
-            name = record[0],
-            symbol = record[1],
-            currency = record[2],
-            bought = LocalDate.parse(record[3]),
-            qty = record[4].toInt(),
-            buyingPrice = record[5].toDouble(),
-            currentPrice = record[6].toDouble(),
-            lastUpdated = LocalDate.parse(record[7])
-        )
-    }
+    private fun mapToEntry(record: List<String>) = Portfolio.Stock(
+        name = record[0],
+        symbol = record[1],
+        currency = record[2],
+        bought = LocalDate.parse(record[3]),
+        qty = record[4].toInt(),
+        buyingPrice = record[5].toDouble(),
+        currentPrice = record[6].toDouble(),
+        lastUpdated = LocalDate.parse(record[7])
+    )
 
     override fun store(portfolio: Portfolio) {
         val lines = portfolio.entries.map(this::mapToLine)
@@ -40,9 +38,8 @@ class PortfolioRepositoryImpl(private val filepath: String = "portfolio.csv") :
         Files.write(path, lines)
     }
 
-    private fun mapToLine(e: Portfolio.Stock): String {
-        return "${e.name};${e.symbol};${e.currency};${e.bought.format(DateTimeFormatter.ISO_DATE)};${e.qty};${e.buyingPrice};${e.currentPrice};${e.lastUpdated.format(
+    private fun mapToLine(e: Portfolio.Stock) =
+        "${e.name};${e.symbol};${e.currency};${e.bought.format(DateTimeFormatter.ISO_DATE)};${e.qty};${e.buyingPrice};${e.currentPrice};${e.lastUpdated.format(
             DateTimeFormatter.ISO_DATE
         )}"
-    }
 }
