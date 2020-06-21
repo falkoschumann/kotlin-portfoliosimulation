@@ -1,10 +1,13 @@
 package de.muspellheim.portfoliosimulation.frontend.fx
 
 import de.muspellheim.portfoliosimulation.contract.*
+import de.muspellheim.portfoliosimulation.contract.data.messages.commands.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.queries.*
 import javafx.beans.property.*
 import javafx.collections.*
+import javafx.concurrent.*
 import java.text.*
+import java.util.concurrent.*
 
 class MainViewModel(private val messageHandling: MessageHandling) {
     private val stocksProperty = ReadOnlyObjectWrapper<ObservableList<StockInfoModel>>()
@@ -13,6 +16,11 @@ class MainViewModel(private val messageHandling: MessageHandling) {
         get() = stocksProperty.get()
         private set(value) = stocksProperty.set(value)
 
+    private val updatingProperty = ReadOnlyBooleanWrapper()
+    fun updatingProperty() = updatingProperty.readOnlyProperty
+    var updating: Boolean
+        get() = updatingProperty.get()
+        private set(value) = updatingProperty.set(value)
 
     private val portfolioValueProperty = ReadOnlyStringWrapper()
     fun portfolioValueProperty() = portfolioValueProperty.readOnlyProperty
@@ -36,6 +44,27 @@ class MainViewModel(private val messageHandling: MessageHandling) {
         stocks = FXCollections.observableList(stockInfoModel)
         portfolioValue = formatCurrency(portfolio.portfolioValue)
         portfolioRateOfReturn = formatCurrency(portfolio.portfolioRateOfReturn)
+    }
+
+    fun update() {
+        ForkJoinPool.commonPool().execute(UpdateTask())
+    }
+
+    private inner class UpdateTask : Task<PortfolioQueryResult>() {
+        init {
+            stocks = FXCollections.emptyObservableList()
+            updating = true
+        }
+
+        override fun call(): PortfolioQueryResult {
+            messageHandling.handle(UpdatePortfolioCommand())
+            return messageHandling.handle(PortfolioQuery())
+        }
+
+        override fun succeeded() {
+            display(value)
+            updating = false
+        }
     }
 }
 

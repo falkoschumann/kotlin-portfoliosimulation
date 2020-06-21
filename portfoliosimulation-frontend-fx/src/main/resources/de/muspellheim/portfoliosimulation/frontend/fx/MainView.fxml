@@ -6,9 +6,17 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.MainViewModel">
+    <ToolBar>
+        <Button text="Update" onAction="#update" disable="${controller.updating}" />
+    </ToolBar>
     <TableView items="${controller.stocks}" VBox.vgrow="ALWAYS">
         <placeholder>
             <Label text="Empty portfolio!" />
+            <Label text="Updating..." visible="${controller.updating}" >
+                <graphic>
+                    <ProgressIndicator />
+                </graphic>
+            </Label>
         </placeholder>
         <columns>
             <TableColumn text="Name">
