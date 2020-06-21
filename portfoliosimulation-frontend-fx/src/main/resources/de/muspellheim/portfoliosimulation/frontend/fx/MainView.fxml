@@ -5,7 +5,7 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.MainViewController">
+<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.MainViewModel">
     <TableView items="${controller.stocks}" VBox.vgrow="ALWAYS">
         <placeholder>
             <Label text="Empty portfolio!" />
@@ -26,37 +26,37 @@
                     <PropertyValueFactory property="currency" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Qty">
+            <TableColumn style="-fx-alignment: baseline-right" text="Qty">
                 <cellValueFactory>
                     <PropertyValueFactory property="qty" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Buying Price">
+            <TableColumn style="-fx-alignment: baseline-right" text="Buying Price">
                 <cellValueFactory>
                     <PropertyValueFactory property="buyingPrice" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Buying Value">
+            <TableColumn style="-fx-alignment: baseline-right" text="Buying Value">
                 <cellValueFactory>
                     <PropertyValueFactory property="buyingValue" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Current Price">
+            <TableColumn style="-fx-alignment: baseline-right" text="Current Price">
                 <cellValueFactory>
                     <PropertyValueFactory property="currentPrice" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Current Value">
+            <TableColumn style="-fx-alignment: baseline-right" text="Current Value">
                 <cellValueFactory>
                     <PropertyValueFactory property="currentValue" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Return">
+            <TableColumn style="-fx-alignment: baseline-right" text="Return">
                 <cellValueFactory>
                     <PropertyValueFactory property="returnValue" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn text="Rate of Return">
+            <TableColumn style="-fx-alignment: baseline-right" text="Rate of Return">
                 <cellValueFactory>
                     <PropertyValueFactory property="rateOfReturn" />
                 </cellValueFactory>
@@ -65,9 +65,9 @@
     </TableView>
     <HBox alignment="CENTER_LEFT" spacing="5.0">
         <Label text="Portfolio value:" />
-        <TextField editable="false" text="${controller.portfolioValue}" />
+        <TextField editable="false" style="-fx-alignment: baseline-right" text="${controller.portfolioValue}" />
         <Label text="Portfolio rate of return:" />
-        <TextField editable="false" text="${controller.portfolioRateOfReturn}" />
+        <TextField editable="false" style="-fx-alignment: baseline-right" text="${controller.portfolioRateOfReturn}" />
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
         </padding>
