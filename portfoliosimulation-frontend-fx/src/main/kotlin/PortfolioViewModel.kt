@@ -9,7 +9,7 @@ import javafx.concurrent.*
 import java.text.*
 import java.util.concurrent.*
 
-class PortfolioViewModel(private val messageHandling: MessageHandling) {
+class PortfolioViewModel(private val messageHandling: MessageHandling, private val onBuy: () -> Unit) {
     private val stocksProperty = ReadOnlyObjectWrapper<ObservableList<StockInfoModel>>()
     fun stocksProperty() = stocksProperty.readOnlyProperty
     var stocks: ObservableList<StockInfoModel>
@@ -44,7 +44,7 @@ class PortfolioViewModel(private val messageHandling: MessageHandling) {
     }
 
     fun buy() {
-        // TODO()
+        onBuy()
     }
 
     private fun display(portfolio: PortfolioQueryResult) {

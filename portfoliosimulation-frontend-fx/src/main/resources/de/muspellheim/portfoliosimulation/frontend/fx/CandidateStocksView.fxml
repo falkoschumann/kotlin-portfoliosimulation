@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.CandidateStocksViewModel">
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Label text="Identification:" />
+        <TextField />
+        <Button text="Search" />
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+    </HBox>
+    <TableView VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn text="Name" />
+            <TableColumn text="Symbol" />
+            <TableColumn text="Currency" />
+            <TableColumn text="Price" />
+        </columns>
+    </TableView>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Label text="Qty:" />
+        <Spinner />
+        <Button text="Buy" />
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+    </HBox>
+</VBox>

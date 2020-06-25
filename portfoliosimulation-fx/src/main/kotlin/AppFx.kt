@@ -3,17 +3,13 @@ package de.muspellheim.portfoliosimulation.fx
 import de.muspellheim.portfoliosimulation.backend.*
 import de.muspellheim.portfoliosimulation.frontend.fx.*
 import javafx.application.*
-import javafx.scene.*
 import javafx.stage.*
 
 class AppFx : Application() {
     override fun start(stage: Stage) {
         val backend = MessageHandlingImpl()
-        val frontend = createPortfolioView(backend)
-
-        stage.title = "Portfolio Simulation"
-        stage.scene = Scene(frontend, 1280.0, 680.0)
-        stage.show()
+        val frontend = createPortfolioDialog(backend)
+        frontend.show()
     }
 }
 
