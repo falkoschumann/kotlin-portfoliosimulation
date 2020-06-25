@@ -9,7 +9,9 @@ import javafx.stage.*
 class AppFx : Application() {
     override fun start(stage: Stage) {
         val backend = MessageHandlingImpl()
-        val frontend = createMainView(backend)
+        val frontend = createPortfolioView(backend)
+
+        stage.title = "Portfolio Simulation"
         stage.scene = Scene(frontend, 1280.0, 680.0)
         stage.show()
     }

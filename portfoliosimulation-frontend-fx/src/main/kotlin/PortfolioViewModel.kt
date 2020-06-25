@@ -9,7 +9,7 @@ import javafx.concurrent.*
 import java.text.*
 import java.util.concurrent.*
 
-class MainViewModel(private val messageHandling: MessageHandling) {
+class PortfolioViewModel(private val messageHandling: MessageHandling) {
     private val stocksProperty = ReadOnlyObjectWrapper<ObservableList<StockInfoModel>>()
     fun stocksProperty() = stocksProperty.readOnlyProperty
     var stocks: ObservableList<StockInfoModel>
@@ -39,15 +39,19 @@ class MainViewModel(private val messageHandling: MessageHandling) {
         display(portfolio)
     }
 
+    fun update() {
+        ForkJoinPool.commonPool().execute(UpdateTask())
+    }
+
+    fun buy() {
+        // TODO()
+    }
+
     private fun display(portfolio: PortfolioQueryResult) {
         val stockInfoModel = portfolio.stocks.map { mapStockInfo(it) }
         stocks = FXCollections.observableList(stockInfoModel)
         portfolioValue = formatCurrency(portfolio.portfolioValue)
         portfolioRateOfReturn = formatCurrency(portfolio.portfolioRateOfReturn)
-    }
-
-    fun update() {
-        ForkJoinPool.commonPool().execute(UpdateTask())
     }
 
     private inner class UpdateTask : Task<PortfolioQueryResult>() {

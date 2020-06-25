@@ -5,9 +5,9 @@ import javafx.fxml.*
 import javafx.scene.*
 import javafx.util.*
 
-fun createMainView(messageHandling: MessageHandling): Parent {
-    val url = MainViewModel::class.java.getResource("MainView.fxml")
+fun createPortfolioView(messageHandling: MessageHandling): Parent {
+    val url = PortfolioViewModel::class.java.getResource("PortfolioView.fxml")
     val loader = FXMLLoader(url)
-    loader.controllerFactory = Callback { MainViewModel(messageHandling) }
+    loader.controllerFactory = Callback { PortfolioViewModel(messageHandling) }
     return loader.load<Parent>()
 }

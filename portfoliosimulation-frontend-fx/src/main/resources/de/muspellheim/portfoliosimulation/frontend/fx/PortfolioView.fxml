@@ -5,9 +5,12 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.MainViewModel">
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.PortfolioViewModel">
     <ToolBar>
         <Button text="Update" onAction="#update" disable="${controller.updating}" />
+        <Button text="Buy" onAction="#buy" />
     </ToolBar>
     <TableView items="${controller.stocks}" VBox.vgrow="ALWAYS">
         <placeholder>
