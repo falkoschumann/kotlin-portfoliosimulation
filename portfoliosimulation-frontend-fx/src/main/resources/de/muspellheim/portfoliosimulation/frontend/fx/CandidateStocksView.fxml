@@ -4,11 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.CandidateStocksViewModel">
+<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.CandidateStocksViewController">
     <HBox alignment="CENTER_LEFT" spacing="10.0">
         <Label text="Identification:" />
-        <TextField />
-        <Button text="Search" />
+        <TextField fx:id="identificationText" promptText="search by identification" />
+        <Button onAction="#search" text="Search" />
       <padding>
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
       </padding>

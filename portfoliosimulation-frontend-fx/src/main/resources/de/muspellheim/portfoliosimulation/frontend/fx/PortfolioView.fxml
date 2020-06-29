@@ -5,17 +5,15 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.PortfolioViewModel">
+<VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.PortfolioViewController">
     <ToolBar>
-        <Button text="Update" onAction="#update" disable="${controller.updating}" />
-        <Button text="Buy" onAction="#buy" />
+        <Button fx:id="updateButton" onAction="#update" text="Update" />
+        <Button onAction="#buy" text="Buy" />
     </ToolBar>
-    <TableView items="${controller.stocks}" VBox.vgrow="ALWAYS">
+    <TableView fx:id="stocksTable" VBox.vgrow="ALWAYS">
         <placeholder>
             <Label text="Empty portfolio!" />
-            <Label text="Updating..." visible="${controller.updating}" >
+            <Label fx:id="updatingLabel" text="Updating...">
                 <graphic>
                     <ProgressIndicator />
                 </graphic>
@@ -76,9 +74,9 @@
     </TableView>
     <HBox alignment="CENTER_LEFT" spacing="5.0">
         <Label text="Portfolio value:" />
-        <TextField editable="false" style="-fx-alignment: baseline-right" text="${controller.portfolioValue}" />
+        <TextField fx:id="portfolioValueText" editable="false" style="-fx-alignment: baseline-right" />
         <Label text="Portfolio rate of return:" />
-        <TextField editable="false" style="-fx-alignment: baseline-right" text="${controller.portfolioRateOfReturn}" />
+        <TextField fx:id="portfolioRateOfReturnText" editable="false" style="-fx-alignment: baseline-right" />
         <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
         </padding>

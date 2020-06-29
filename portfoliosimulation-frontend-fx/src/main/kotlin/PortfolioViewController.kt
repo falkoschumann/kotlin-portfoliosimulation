@@ -3,38 +3,19 @@ package de.muspellheim.portfoliosimulation.frontend.fx
 import de.muspellheim.portfoliosimulation.contract.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.commands.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.queries.*
-import javafx.beans.property.*
-import javafx.collections.*
 import javafx.concurrent.*
+import javafx.scene.control.*
 import java.text.*
 import java.util.concurrent.*
 
-class PortfolioViewModel(private val messageHandling: MessageHandling, private val onBuy: () -> Unit) {
-    private val stocksProperty = ReadOnlyObjectWrapper<ObservableList<StockInfoModel>>()
-    fun stocksProperty() = stocksProperty.readOnlyProperty
-    var stocks: ObservableList<StockInfoModel>
-        get() = stocksProperty.get()
-        private set(value) = stocksProperty.set(value)
+class PortfolioViewController(private val messageHandling: MessageHandling, private val onBuy: () -> Unit) {
+    lateinit var updateButton: Button
+    lateinit var updatingLabel: Label
+    lateinit var stocksTable: TableView<StockInfoModel>
+    lateinit var portfolioValueText: TextField
+    lateinit var portfolioRateOfReturnText: TextField
 
-    private val updatingProperty = ReadOnlyBooleanWrapper()
-    fun updatingProperty() = updatingProperty.readOnlyProperty
-    var updating: Boolean
-        get() = updatingProperty.get()
-        private set(value) = updatingProperty.set(value)
-
-    private val portfolioValueProperty = ReadOnlyStringWrapper()
-    fun portfolioValueProperty() = portfolioValueProperty.readOnlyProperty
-    var portfolioValue: String
-        get() = portfolioValueProperty.get()
-        private set(value) = portfolioValueProperty.set(value)
-
-    private val portfolioRateOfReturnProperty = ReadOnlyStringWrapper()
-    fun portfolioRateOfReturnProperty() = portfolioRateOfReturnProperty.readOnlyProperty
-    var portfolioRateOfReturn: String
-        get() = portfolioRateOfReturnProperty.get()
-        private set(value) = portfolioRateOfReturnProperty.set(value)
-
-    init {
+    fun initialize() {
         val portfolio = messageHandling.handle(PortfolioQuery())
         display(portfolio)
     }
@@ -49,15 +30,16 @@ class PortfolioViewModel(private val messageHandling: MessageHandling, private v
 
     private fun display(portfolio: PortfolioQueryResult) {
         val stockInfoModel = portfolio.stocks.map { mapStockInfo(it) }
-        stocks = FXCollections.observableList(stockInfoModel)
-        portfolioValue = formatCurrency(portfolio.portfolioValue)
-        portfolioRateOfReturn = formatCurrency(portfolio.portfolioRateOfReturn)
+        stocksTable.items.setAll(stockInfoModel)
+        portfolioValueText.text = formatCurrency(portfolio.portfolioValue)
+        portfolioRateOfReturnText.text = formatCurrency(portfolio.portfolioRateOfReturn)
     }
 
     private inner class UpdateTask : Task<PortfolioQueryResult>() {
         init {
-            stocks = FXCollections.emptyObservableList()
-            updating = true
+            stocksTable.items.clear()
+            updateButton.isDisable = true
+            updatingLabel.isVisible = true
         }
 
         override fun call(): PortfolioQueryResult {
@@ -67,7 +49,8 @@ class PortfolioViewModel(private val messageHandling: MessageHandling, private v
 
         override fun succeeded() {
             display(value)
-            updating = false
+            updateButton.isDisable = false
+            updatingLabel.isVisible = false
         }
     }
 }

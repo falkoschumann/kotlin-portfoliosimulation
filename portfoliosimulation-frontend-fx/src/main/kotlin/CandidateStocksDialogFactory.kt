@@ -7,9 +7,9 @@ import javafx.stage.*
 import javafx.util.*
 
 fun createCandidateStocksDialog(messageHandling: MessageHandling, stage: Stage = Stage()): Stage {
-    val url = CandidateStocksViewModel::class.java.getResource("CandidateStocksView.fxml")
+    val url = CandidateStocksViewController::class.java.getResource("CandidateStocksView.fxml")
     val loader = FXMLLoader(url)
-    loader.controllerFactory = Callback { CandidateStocksViewModel(messageHandling) }
+    loader.controllerFactory = Callback { CandidateStocksViewController(messageHandling) }
     val root = loader.load<Parent>()
 
     stage.title = "Candidate Stocks"

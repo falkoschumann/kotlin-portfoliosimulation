@@ -7,10 +7,10 @@ import javafx.stage.*
 import javafx.util.*
 
 fun createPortfolioDialog(messageHandling: MessageHandling, stage: Stage = Stage()): Stage {
-    val url = PortfolioViewModel::class.java.getResource("PortfolioView.fxml")
+    val url = PortfolioViewController::class.java.getResource("PortfolioView.fxml")
     val loader = FXMLLoader(url)
     loader.controllerFactory = Callback {
-        PortfolioViewModel(messageHandling, onBuy = {
+        PortfolioViewController(messageHandling, onBuy = {
             createCandidateStocksDialog(messageHandling).show()
         })
     }
