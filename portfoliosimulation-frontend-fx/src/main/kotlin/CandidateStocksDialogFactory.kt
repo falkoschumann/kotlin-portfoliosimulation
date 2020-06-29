@@ -13,6 +13,6 @@ fun createCandidateStocksDialog(messageHandling: MessageHandling, stage: Stage =
     val root = loader.load<Parent>()
 
     stage.title = "Candidate Stocks"
-    stage.scene = Scene(root, 600.0, 400.0)
+    stage.scene = Scene(root, 700.0, 400.0)
     return stage
 }

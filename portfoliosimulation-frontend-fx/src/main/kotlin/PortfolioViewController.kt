@@ -10,6 +10,7 @@ import java.util.concurrent.*
 
 class PortfolioViewController(private val messageHandling: MessageHandling, private val onBuy: () -> Unit) {
     lateinit var updateButton: Button
+    lateinit var placeholderLabel: Label
     lateinit var updatingLabel: Label
     lateinit var stocksTable: TableView<StockInfoModel>
     lateinit var portfolioValueText: TextField
@@ -38,6 +39,7 @@ class PortfolioViewController(private val messageHandling: MessageHandling, priv
     private inner class UpdateTask : Task<PortfolioQueryResult>() {
         init {
             stocksTable.items.clear()
+            placeholderLabel.isVisible = false
             updateButton.isDisable = true
             updatingLabel.isVisible = true
         }
@@ -51,6 +53,7 @@ class PortfolioViewController(private val messageHandling: MessageHandling, priv
             display(value)
             updateButton.isDisable = false
             updatingLabel.isVisible = false
+            placeholderLabel.isVisible = true
         }
     }
 }

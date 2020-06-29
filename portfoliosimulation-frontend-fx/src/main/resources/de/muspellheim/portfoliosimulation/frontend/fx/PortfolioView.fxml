@@ -12,15 +12,17 @@
     </ToolBar>
     <TableView fx:id="stocksTable" VBox.vgrow="ALWAYS">
         <placeholder>
-            <Label text="Empty portfolio!" />
-            <Label fx:id="updatingLabel" text="Updating...">
-                <graphic>
-                    <ProgressIndicator />
-                </graphic>
-            </Label>
+            <StackPane>
+                <Label fx:id="placeholderLabel" text="Empty portfolio!" />
+                <Label fx:id="updatingLabel" text="Updating..." visible="false">
+                    <graphic>
+                        <ProgressIndicator />
+                    </graphic>
+                </Label>
+            </StackPane>
         </placeholder>
         <columns>
-            <TableColumn text="Name">
+            <TableColumn text="Name" prefWidth="400">
                 <cellValueFactory>
                     <PropertyValueFactory property="name" />
                 </cellValueFactory>
