@@ -8,7 +8,7 @@
 <VBox xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.CandidateStocksViewController">
     <HBox alignment="CENTER_LEFT" spacing="10.0">
         <Label text="Identification:" />
-        <TextField fx:id="identificationText" promptText="search by identification" />
+        <TextField fx:id="identificationText" promptText="search by identification" onAction="#search" />
         <Button fx:id="searchButton" onAction="#search" text="Search" />
       <padding>
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -50,8 +50,8 @@
     </TableView>
     <HBox alignment="CENTER_LEFT" spacing="10.0">
         <Label text="Qty:" />
-        <Spinner disable="true" />
-        <Button text="Buy" disable="true" onAction="#buy" />
+        <TextField fx:id="qtyText" text="1" />
+        <Button fx:id="buyButton" text="Buy" disable="true" onAction="#buy" />
       <padding>
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
       </padding>

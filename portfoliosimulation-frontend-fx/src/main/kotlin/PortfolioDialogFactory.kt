@@ -10,8 +10,17 @@ fun createPortfolioDialog(messageHandling: MessageHandling, stage: Stage = Stage
     val url = PortfolioViewController::class.java.getResource("PortfolioView.fxml")
     val loader = FXMLLoader(url)
     loader.controllerFactory = Callback {
-        PortfolioViewController(messageHandling, onBuy = {
-            createCandidateStocksDialog(messageHandling).show()
+        PortfolioViewController(messageHandling, onBuy = { onBuyed ->
+            val candidateStocksStage = Stage()
+            createCandidateStocksDialog(
+                messageHandling,
+                onBuyed = {
+                    candidateStocksStage.hide()
+                    onBuyed()
+                },
+                stage = candidateStocksStage,
+                owner = stage
+            ).show()
         })
     }
     val root = loader.load<Parent>()

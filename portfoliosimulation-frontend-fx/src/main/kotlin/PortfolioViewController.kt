@@ -8,7 +8,10 @@ import javafx.scene.control.*
 import java.text.*
 import java.util.concurrent.*
 
-class PortfolioViewController(private val messageHandling: MessageHandling, private val onBuy: () -> Unit) {
+class PortfolioViewController(
+    private val messageHandling: MessageHandling,
+    private val onBuy: (onBuyed: () -> Unit) -> Unit
+) {
     lateinit var updateButton: Button
     lateinit var placeholderLabel: Label
     lateinit var updatingLabel: Label
@@ -17,8 +20,7 @@ class PortfolioViewController(private val messageHandling: MessageHandling, priv
     lateinit var portfolioRateOfReturnText: TextField
 
     fun initialize() {
-        val portfolio = messageHandling.handle(PortfolioQuery())
-        display(portfolio)
+        refresh()
     }
 
     fun update() {
@@ -26,7 +28,12 @@ class PortfolioViewController(private val messageHandling: MessageHandling, priv
     }
 
     fun buy() {
-        onBuy()
+        onBuy { refresh() }
+    }
+
+    private fun refresh() {
+        val portfolio = messageHandling.handle(PortfolioQuery())
+        display(portfolio)
     }
 
     private fun display(portfolio: PortfolioQueryResult) {
