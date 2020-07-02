@@ -13,6 +13,7 @@ class PortfolioViewController(
     private val onBuy: (onBuyed: () -> Unit) -> Unit
 ) {
     lateinit var updateButton: Button
+    lateinit var sellButton: Button
     lateinit var placeholderLabel: Label
     lateinit var updatingLabel: Label
     lateinit var stocksTable: TableView<StockInfoModel>
@@ -20,6 +21,7 @@ class PortfolioViewController(
     lateinit var portfolioRateOfReturnText: TextField
 
     fun initialize() {
+        sellButton.disableProperty().bind(stocksTable.selectionModel.selectedItemProperty().isNull)
         refresh()
     }
 
@@ -29,6 +31,12 @@ class PortfolioViewController(
 
     fun buy() {
         onBuy { refresh() }
+    }
+
+    fun sell() {
+        val symbol = stocksTable.selectionModel.selectedItem.symbol
+        messageHandling.handle(SellStockCommand(symbol))
+        refresh()
     }
 
     private fun refresh() {
