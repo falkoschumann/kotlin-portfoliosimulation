@@ -1,0 +1,5 @@
+package de.muspellheim.portfoliosimulation.contract.messages.queries.portfoliostock
+
+import de.muspellheim.portfoliosimulation.contract.messages.QueryHandling
+
+interface PortfolioStockQueryHandling : QueryHandling<PortfolioStockQuery, PortfolioStockQueryResult>

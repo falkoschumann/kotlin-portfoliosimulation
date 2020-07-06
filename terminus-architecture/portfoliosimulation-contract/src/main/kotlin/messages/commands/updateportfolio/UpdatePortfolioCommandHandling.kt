@@ -1,0 +1,5 @@
+package de.muspellheim.portfoliosimulation.contract.messages.commands.updateportfolio
+
+import de.muspellheim.portfoliosimulation.contract.messages.CommandHandling
+
+interface UpdatePortfolioCommandHandling : CommandHandling<UpdatePortfolioCommand>
