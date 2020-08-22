@@ -1,8 +1,7 @@
 package de.muspellheim.portfoliosimulation.contract.messages.queries.portfoliostock
 
-import de.muspellheim.portfoliosimulation.contract.messages.Query
-import de.muspellheim.portfoliosimulation.contract.messages.QueryResult
+import de.muspellheim.portfoliosimulation.contract.messages.*
 
-data class PortfolioStockQuery(val pattern: String):Query
+data class PortfolioStockQuery(val pattern: String) : Query
 
-data class PortfolioStockQueryResult(val matchingStocks: List<Pair<String, String>>):QueryResult
+data class PortfolioStockQueryResult(val matchingStocks: List<Pair<String, String>>) : QueryResult

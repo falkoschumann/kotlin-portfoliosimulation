@@ -1,7 +1,6 @@
 package de.muspellheim.portfoliosimulation.contract.messages.queries.portfolio
 
-import de.muspellheim.portfoliosimulation.contract.messages.Query
-import de.muspellheim.portfoliosimulation.contract.messages.QueryResult
+import de.muspellheim.portfoliosimulation.contract.messages.*
 
 class PortfolioQuery() : Query
 
