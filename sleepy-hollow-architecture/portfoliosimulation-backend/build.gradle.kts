@@ -1,6 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    `java-library`
+    id("org.jetbrains.kotlin.jvm")
 }
 
 dependencies {

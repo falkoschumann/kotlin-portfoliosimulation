@@ -6,7 +6,7 @@ import java.net.http.*
 import javax.json.*
 
 class AlphaVantageProviderImpl : AlphaVantageProvider {
-    private lateinit var baseUrl: String
+    private var baseUrl: String
 
     init {
         val secretsFilename = "/alphavantage.secrets"
