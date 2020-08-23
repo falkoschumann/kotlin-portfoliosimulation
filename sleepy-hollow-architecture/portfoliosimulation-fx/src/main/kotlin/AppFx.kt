@@ -8,7 +8,7 @@ import javafx.stage.*
 class AppFx : Application() {
     override fun start(stage: Stage) {
         val backend = MessageHandlingImpl()
-        val frontend = createPortfolioDialog(backend)
+        val frontend = createPortfolioDialog(backend, stage)
         frontend.show()
     }
 }
