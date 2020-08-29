@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.CandidateStocksViewController">
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Label text="Identification:" />
+        <TextField fx:id="identificationText" promptText="search by identification" onAction="#search" />
+        <Button fx:id="searchButton" onAction="#search" text="Search" />
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+    </HBox>
+    <TableView fx:id="candidatesTable" VBox.vgrow="ALWAYS">
+        <placeholder>
+            <StackPane>
+                <Label fx:id="placeholderLabel" />
+                <Label fx:id="searchingLabel" text="Searching..." visible="false">
+                    <graphic>
+                        <ProgressIndicator />
+                    </graphic>
+                </Label>
+            </StackPane>
+        </placeholder>
+        <columns>
+            <TableColumn text="Name" prefWidth="400">
+                <cellValueFactory>
+                    <PropertyValueFactory property="name" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Symbol">
+                <cellValueFactory>
+                    <PropertyValueFactory property="symbol" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Currency">
+                <cellValueFactory>
+                    <PropertyValueFactory property="currency" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Price">
+                <cellValueFactory>
+                    <PropertyValueFactory property="price" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Label text="Qty:" />
+        <TextField fx:id="qtyText" text="1" />
+        <Button fx:id="buyButton" text="Buy" disable="true" onAction="#buy" />
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+    </HBox>
+</VBox>

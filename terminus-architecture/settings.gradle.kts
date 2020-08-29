@@ -3,5 +3,7 @@ include(
     "portfoliosimulation-contract",
     "portfoliosimulation-backend",
     "portfoliosimulation-frontend",
-    "portfoliosimulation"
+    "portfoliosimulation",
+    "portfoliosimulation-frontend-fx",
+    "portfoliosimulation-fx"
 )
