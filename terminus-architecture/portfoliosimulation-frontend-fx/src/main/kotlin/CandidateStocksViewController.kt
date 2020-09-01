@@ -1,6 +1,5 @@
 package de.muspellheim.portfoliosimulation.frontend.fx
 
-import de.muspellheim.portfoliosimulation.contract.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.commands.*
 import de.muspellheim.portfoliosimulation.contract.data.messages.queries.*
 import javafx.beans.property.*
@@ -11,8 +10,8 @@ import java.time.*
 import java.util.concurrent.*
 
 class CandidateStocksViewController constructor(
-    private val messageHandling: MessageHandling,
-    private val onBuyed: () -> Unit
+        private val messageHandling: MessageHandling,
+        private val onBuyed: () -> Unit
 ) {
     lateinit var identificationText: TextField
     lateinit var placeholderLabel: Label
@@ -38,14 +37,14 @@ class CandidateStocksViewController constructor(
     fun buy() {
         val toBuy = candidatesTable.selectionModel.selectedItem
         messageHandling.handle(
-            BuyStockCommand(
-                stockName = toBuy.name,
-                stockSymbol = toBuy.symbol,
-                stockPriceCurrency = toBuy.currency,
-                qty = qtyProperty.value,
-                stockPrice = toBuy.price,
-                bought = LocalDate.now()
-            )
+                BuyStockCommand(
+                        stockName = toBuy.name,
+                        stockSymbol = toBuy.symbol,
+                        stockPriceCurrency = toBuy.currency,
+                        qty = qtyProperty.value,
+                        stockPrice = toBuy.price,
+                        bought = LocalDate.now()
+                )
         )
         onBuyed()
     }

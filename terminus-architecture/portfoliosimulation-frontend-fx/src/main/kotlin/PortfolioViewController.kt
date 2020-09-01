@@ -5,15 +5,27 @@ import de.muspellheim.portfoliosimulation.contract.messages.commands.updateportf
 import de.muspellheim.portfoliosimulation.contract.messages.queries.portfolio.*
 import de.muspellheim.portfoliosimulation.frontend.fx.util.*
 import javafx.concurrent.*
+import javafx.fxml.*
+import javafx.scene.*
 import javafx.scene.control.*
 import java.text.*
 import java.util.concurrent.*
 
-class PortfolioViewController(private val onBuy: (onBuyed: () -> Unit) -> Unit) {
-    val onPortfolioQuery = Action<PortfolioQuery>()
-    val onSellStock = Action<SellStockCommand>()
-    val onUpdatePortfolio = Action<UpdatePortfolioCommand>()
+fun createPortfolioViewController(): PortfolioViewController {
+    val url = PortfolioViewController::class.java.getResource("PortfolioView.fxml")
+    val loader = FXMLLoader(url)
+    loader.load<Parent>()
+    return loader.getController()
+}
 
+class PortfolioViewController {
+    val onPortfolioQuery = Action<PortfolioQuery>()
+    val onSellStockCommand = Action<SellStockCommand>()
+    val onUpdatePortfolioCommand = Action<UpdatePortfolioCommand>()
+
+    private val onBuy: (onBuyed: () -> Unit) -> Unit
+
+    lateinit var view: Parent
     lateinit var updateButton: Button
     lateinit var sellButton: Button
     lateinit var placeholderLabel: Label
@@ -37,7 +49,7 @@ class PortfolioViewController(private val onBuy: (onBuyed: () -> Unit) -> Unit) 
 
     fun sell() {
         val symbol = stocksTable.selectionModel.selectedItem.symbol
-        onSellStock(SellStockCommand(symbol))
+        onSellStockCommand(SellStockCommand(symbol))
         refresh()
     }
 
@@ -61,7 +73,7 @@ class PortfolioViewController(private val onBuy: (onBuyed: () -> Unit) -> Unit) 
         }
 
         override fun call() {
-            onUpdatePortfolio(UpdatePortfolioCommand())
+            onUpdatePortfolioCommand(UpdatePortfolioCommand())
         }
 
         override fun succeeded() {

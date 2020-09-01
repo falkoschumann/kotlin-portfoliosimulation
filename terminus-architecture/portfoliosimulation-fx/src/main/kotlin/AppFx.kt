@@ -1,16 +1,23 @@
 package de.muspellheim.portfoliosimulation.fx
 
-import de.muspellheim.portfoliosimulation.backend.adapters.*
-import de.muspellheim.portfoliosimulation.backend.messagehandlers.*
-import de.muspellheim.portfoliosimulation.contract.messages.commands.buystock.*
-import de.muspellheim.portfoliosimulation.contract.messages.commands.sellstock.*
-import de.muspellheim.portfoliosimulation.contract.messages.commands.updateportfolio.*
-import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.*
+import de.muspellheim.portfoliosimulation.backend.adapters.PortfolioRepositoryImpl
+import de.muspellheim.portfoliosimulation.backend.adapters.StockExchangeProviderImpl
+import de.muspellheim.portfoliosimulation.backend.messagehandlers.BuyStockCommandHandler
+import de.muspellheim.portfoliosimulation.backend.messagehandlers.CandidateStocksQueryHandler
+import de.muspellheim.portfoliosimulation.backend.messagehandlers.PortfolioQueryHandler
+import de.muspellheim.portfoliosimulation.backend.messagehandlers.PortfolioStockQueryHandler
+import de.muspellheim.portfoliosimulation.backend.messagehandlers.SellStockCommandHandler
+import de.muspellheim.portfoliosimulation.backend.messagehandlers.UpdatePortfolioCommandHandler
+import de.muspellheim.portfoliosimulation.contract.messages.commands.buystock.BuyStockCommandHandling
+import de.muspellheim.portfoliosimulation.contract.messages.commands.sellstock.SellStockCommandHandling
+import de.muspellheim.portfoliosimulation.contract.messages.commands.updateportfolio.UpdatePortfolioCommandHandling
+import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.CandidateStocksQueryHandling
 import de.muspellheim.portfoliosimulation.contract.messages.queries.portfolio.*
-import de.muspellheim.portfoliosimulation.contract.messages.queries.portfoliostock.*
+import de.muspellheim.portfoliosimulation.contract.messages.queries.portfoliostock.PortfolioStockQueryHandling
 import de.muspellheim.portfoliosimulation.frontend.fx.*
-import javafx.application.*
-import javafx.stage.*
+import javafx.application.Application
+import javafx.scene.*
+import javafx.stage.Stage
 
 class AppFx : Application() {
     private lateinit var pqh: PortfolioQueryHandling
@@ -24,20 +31,31 @@ class AppFx : Application() {
         val repo = PortfolioRepositoryImpl()
         val ex = StockExchangeProviderImpl()
 
-        val pqh = PortfolioQueryHandler(repo)
-        val upc = UpdatePortfolioCommandHandler(repo, ex)
-        val csq = CandidateStocksQueryHandler(ex)
-        val bsc = BuyStockCommandHandler(repo)
-        val psq = PortfolioStockQueryHandler(repo)
-        val ssc = SellStockCommandHandler(repo)
+        pqh = PortfolioQueryHandler(repo)
+        upc = UpdatePortfolioCommandHandler(repo, ex)
+        csq = CandidateStocksQueryHandler(ex)
+        bsc = BuyStockCommandHandler(repo)
+        psq = PortfolioStockQueryHandler(repo)
+        ssc = SellStockCommandHandler(repo)
     }
 
     override fun start(stage: Stage) {
-        val frontend = createPortfolioDialog(stage)
+        val portfolioViewController = createPortfolioViewController()
+        portfolioViewController.onPortfolioQuery += {
+            val result = pqh.handle(it)
+            portfolioViewController.display(result)
+        }
+        portfolioViewController.onUpdatePortfolioCommand += {
+            upc.handle(it)
+            val result = pqh.handle(PortfolioQuery())
+            portfolioViewController.display(result);
+        }
 
         // TODO: Bind
 
-        frontend.show()
+        stage.title = "Portfolio Simulation"
+        stage.scene = Scene(portfolioViewController.view, 1280.0, 680.0)
+        stage.show()
     }
 }
 

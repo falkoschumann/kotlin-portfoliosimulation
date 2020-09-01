@@ -1,6 +1,5 @@
 package de.muspellheim.portfoliosimulation.frontend.fx
 
-import de.muspellheim.portfoliosimulation.contract.*
 import javafx.fxml.*
 import javafx.scene.*
 import javafx.stage.*
