@@ -1,15 +1,55 @@
 package de.muspellheim.portfoliosimulation.frontend.fx
 
+import de.muspellheim.portfoliosimulation.contract.messages.commands.buystock.*
 import de.muspellheim.portfoliosimulation.contract.messages.commands.sellstock.*
 import de.muspellheim.portfoliosimulation.contract.messages.commands.updateportfolio.*
+import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.*
 import de.muspellheim.portfoliosimulation.contract.messages.queries.portfolio.*
-import de.muspellheim.portfoliosimulation.frontend.fx.util.*
 import javafx.concurrent.*
 import javafx.fxml.*
 import javafx.scene.*
 import javafx.scene.control.*
+import javafx.stage.*
 import java.text.*
 import java.util.concurrent.*
+
+class PortfolioDialog(private val stage: Stage = Stage()) {
+    private val portfolioViewController = createPortfolioViewController()
+    private val candidateStocksDialog = CandidateStocksDialog(owner = stage)
+
+    var onPortfolioQuery by portfolioViewController::onPortfolioQuery
+    var onSellStockCommand by portfolioViewController::onSellStockCommand
+    var onUpdatePortfolioCommand by portfolioViewController::onUpdatePortfolioCommand
+    var onCandidateStocksQuery by candidateStocksDialog::onCandidateStocksQuery
+    lateinit var onBuyStockCommand: (command: BuyStockCommand) -> Unit
+
+    init {
+        stage.title = "Portfolio Simulation"
+        stage.scene = Scene(portfolioViewController.view, 1280.0, 680.0)
+
+        portfolioViewController.onBuy = {
+            candidateStocksDialog.show()
+        }
+        candidateStocksDialog.onBuyStockCommand = {
+            onBuyStockCommand(it)
+            candidateStocksDialog.hide()
+            onPortfolioQuery(PortfolioQuery())
+        }
+    }
+
+    fun show() {
+        stage.show()
+        onPortfolioQuery(PortfolioQuery())
+    }
+
+    fun display(portfolio: PortfolioQueryResult) {
+        portfolioViewController.display(portfolio)
+    }
+
+    fun display(candidateStocks: CandidateStocksQueryResult) {
+        candidateStocksDialog.display((candidateStocks))
+    }
+}
 
 fun createPortfolioViewController(): PortfolioViewController {
     val url = PortfolioViewController::class.java.getResource("PortfolioView.fxml")
@@ -19,10 +59,10 @@ fun createPortfolioViewController(): PortfolioViewController {
 }
 
 class PortfolioViewController {
-    val onPortfolioQuery = Action<PortfolioQuery>()
-    val onSellStockCommand = Action<SellStockCommand>()
-    val onUpdatePortfolioCommand = Action<UpdatePortfolioCommand>()
-    val onBuy = Action<Unit>()
+    lateinit var onPortfolioQuery: (query: PortfolioQuery) -> Unit
+    lateinit var onSellStockCommand: (command: SellStockCommand) -> Unit
+    lateinit var onUpdatePortfolioCommand: (command: UpdatePortfolioCommand) -> Unit
+    lateinit var onBuy: () -> Unit
 
     lateinit var view: Parent
     lateinit var updateButton: Button
@@ -35,8 +75,6 @@ class PortfolioViewController {
 
     fun initialize() {
         sellButton.disableProperty().bind(stocksTable.selectionModel.selectedItemProperty().isNull)
-
-        onPortfolioQuery(PortfolioQuery())
     }
 
     fun update() {
@@ -44,12 +82,13 @@ class PortfolioViewController {
     }
 
     fun buy() {
-        onBuy(Unit)
+        onBuy()
     }
 
     fun sell() {
         val symbol = stocksTable.selectionModel.selectedItem.symbol
         onSellStockCommand(SellStockCommand(symbol))
+        onPortfolioQuery(PortfolioQuery())
     }
 
     fun display(portfolio: PortfolioQueryResult) {
@@ -80,16 +119,16 @@ class PortfolioViewController {
 }
 
 fun mapStockInfo(stock: PortfolioQueryResult.StockInfo) = StockInfoModel(
-    name = stock.name,
-    symbol = stock.symbol,
-    currency = stock.currency,
-    qty = stock.qty,
-    buyingPrice = formatCurrency(stock.buyingPrice),
-    buyingValue = formatCurrency(stock.buyingValue),
-    currentPrice = formatCurrency(stock.currentPrice),
-    currentValue = formatCurrency(stock.currentValue),
-    returnValue = formatCurrency(stock.returnValue),
-    rateOfReturn = formatCurrency(stock.rateOfReturn)
+        name = stock.name,
+        symbol = stock.symbol,
+        currency = stock.currency,
+        qty = stock.qty,
+        buyingPrice = formatCurrency(stock.buyingPrice),
+        buyingValue = formatCurrency(stock.buyingValue),
+        currentPrice = formatCurrency(stock.currentPrice),
+        currentValue = formatCurrency(stock.currentValue),
+        returnValue = formatCurrency(stock.returnValue),
+        rateOfReturn = formatCurrency(stock.rateOfReturn)
 )
 
 fun formatCurrency(value: Double): String {
@@ -100,14 +139,14 @@ fun formatCurrency(value: Double): String {
 }
 
 data class StockInfoModel(
-    val name: String,
-    val symbol: String,
-    val currency: String,
-    val qty: Int,
-    val buyingPrice: String,
-    val buyingValue: String,
-    val currentPrice: String,
-    val currentValue: String,
-    val returnValue: String,
-    val rateOfReturn: String
+        val name: String,
+        val symbol: String,
+        val currency: String,
+        val qty: Int,
+        val buyingPrice: String,
+        val buyingValue: String,
+        val currentPrice: String,
+        val currentValue: String,
+        val returnValue: String,
+        val rateOfReturn: String
 )

@@ -1,20 +1,43 @@
 package de.muspellheim.portfoliosimulation.frontend.fx
 
-import de.muspellheim.portfoliosimulation.contract.messages.commands.buystock.BuyStockCommand
-import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.CandidateStocksQuery
-import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.CandidateStocksQueryResult
-import de.muspellheim.portfoliosimulation.frontend.fx.util.Action
-import javafx.beans.property.SimpleIntegerProperty
-import javafx.concurrent.Task
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.TableView
-import javafx.scene.control.TextField
-import javafx.util.converter.NumberStringConverter
-import java.time.LocalDate
-import java.util.concurrent.ForkJoinPool
+import de.muspellheim.portfoliosimulation.contract.messages.commands.buystock.*
+import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.*
+import javafx.beans.property.*
+import javafx.concurrent.*
+import javafx.fxml.*
+import javafx.scene.*
+import javafx.scene.control.*
+import javafx.stage.*
+import javafx.util.converter.*
+import java.time.*
+import java.util.concurrent.*
+
+class CandidateStocksDialog(private val stage: Stage = Stage(), owner: Window) {
+    private val candidateStocksViewController = createCandidateStocksViewController()
+
+    var onCandidateStocksQuery by candidateStocksViewController::onCandidateStocksQuery
+    var onBuyStockCommand by candidateStocksViewController::onBuyStockCommand
+
+    init {
+        stage.initOwner(owner)
+        stage.initModality(Modality.WINDOW_MODAL)
+        stage.title = "Candidate Stocks"
+        stage.scene = Scene(candidateStocksViewController.view, 700.0, 400.0)
+    }
+
+    fun show() {
+        candidateStocksViewController.reset()
+        stage.show()
+    }
+
+    fun hide() {
+        stage.hide()
+    }
+
+    fun display(candidateStocks: CandidateStocksQueryResult) {
+        candidateStocksViewController.display((candidateStocks))
+    }
+}
 
 fun createCandidateStocksViewController(): CandidateStocksViewController {
     val url = PortfolioViewController::class.java.getResource("CandidateStocksView.fxml")
@@ -24,9 +47,10 @@ fun createCandidateStocksViewController(): CandidateStocksViewController {
 }
 
 class CandidateStocksViewController {
-    val onCandidateStocksQuery = Action<CandidateStocksQuery>()
-    val onBuyStockCommand = Action<BuyStockCommand>()
+    lateinit var onCandidateStocksQuery: (query: CandidateStocksQuery) -> Unit
+    lateinit var onBuyStockCommand: (command: BuyStockCommand) -> Unit
 
+    lateinit var view: Parent
     lateinit var identificationText: TextField
     lateinit var placeholderLabel: Label
     lateinit var searchButton: Button
@@ -44,6 +68,10 @@ class CandidateStocksViewController {
         buyButton.disableProperty().bind(candidateSelected.not().or(qtyValid.not()))
     }
 
+    fun reset() {
+        candidatesTable.items.clear()
+    }
+
     fun search() {
         ForkJoinPool.commonPool().execute(SearchTask())
     }
@@ -51,14 +79,14 @@ class CandidateStocksViewController {
     fun buy() {
         val toBuy = candidatesTable.selectionModel.selectedItem
         onBuyStockCommand(
-            BuyStockCommand(
-                stockName = toBuy.name,
-                stockSymbol = toBuy.symbol,
-                stockPriceCurrency = toBuy.currency,
-                qty = qtyProperty.value,
-                stockPrice = toBuy.price,
-                bought = LocalDate.now()
-            )
+                BuyStockCommand(
+                        stockName = toBuy.name,
+                        stockSymbol = toBuy.symbol,
+                        stockPriceCurrency = toBuy.currency,
+                        qty = qtyProperty.value,
+                        stockPrice = toBuy.price,
+                        bought = LocalDate.now()
+                )
         )
     }
 

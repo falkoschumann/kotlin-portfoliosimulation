@@ -1,23 +1,16 @@
 package de.muspellheim.portfoliosimulation.fx
 
-import de.muspellheim.portfoliosimulation.backend.adapters.PortfolioRepositoryImpl
-import de.muspellheim.portfoliosimulation.backend.adapters.StockExchangeProviderImpl
-import de.muspellheim.portfoliosimulation.backend.messagehandlers.BuyStockCommandHandler
-import de.muspellheim.portfoliosimulation.backend.messagehandlers.CandidateStocksQueryHandler
-import de.muspellheim.portfoliosimulation.backend.messagehandlers.PortfolioQueryHandler
-import de.muspellheim.portfoliosimulation.backend.messagehandlers.PortfolioStockQueryHandler
-import de.muspellheim.portfoliosimulation.backend.messagehandlers.SellStockCommandHandler
-import de.muspellheim.portfoliosimulation.backend.messagehandlers.UpdatePortfolioCommandHandler
-import de.muspellheim.portfoliosimulation.contract.messages.commands.buystock.BuyStockCommandHandling
-import de.muspellheim.portfoliosimulation.contract.messages.commands.sellstock.SellStockCommandHandling
-import de.muspellheim.portfoliosimulation.contract.messages.commands.updateportfolio.UpdatePortfolioCommandHandling
-import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.CandidateStocksQueryHandling
+import de.muspellheim.portfoliosimulation.backend.adapters.*
+import de.muspellheim.portfoliosimulation.backend.messagehandlers.*
+import de.muspellheim.portfoliosimulation.contract.messages.commands.buystock.*
+import de.muspellheim.portfoliosimulation.contract.messages.commands.sellstock.*
+import de.muspellheim.portfoliosimulation.contract.messages.commands.updateportfolio.*
+import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.*
 import de.muspellheim.portfoliosimulation.contract.messages.queries.portfolio.*
-import de.muspellheim.portfoliosimulation.contract.messages.queries.portfoliostock.PortfolioStockQueryHandling
+import de.muspellheim.portfoliosimulation.contract.messages.queries.portfoliostock.*
 import de.muspellheim.portfoliosimulation.frontend.fx.*
-import javafx.application.Application
-import javafx.scene.*
-import javafx.stage.Stage
+import javafx.application.*
+import javafx.stage.*
 
 class AppFx : Application() {
     private lateinit var pqh: PortfolioQueryHandling
@@ -39,37 +32,33 @@ class AppFx : Application() {
         ssc = SellStockCommandHandler(repo)
     }
 
-    override fun start(stage: Stage) {
+    override fun start(primaryStage: Stage) {
         // Build
-        val portfolioViewController = createPortfolioViewController()
-        val candidateStocksViewController= createCandidateStocksViewController()
-        stage.title = "Portfolio Simulation"
-        stage.scene = Scene(portfolioViewController.view, 1280.0, 680.0)
+        val portfolioDialog = PortfolioDialog(primaryStage)
 
         // Bind
-        portfolioViewController.onPortfolioQuery += {
+        portfolioDialog.onPortfolioQuery = {
             val result = pqh.handle(it)
-            portfolioViewController.display(result)
+            portfolioDialog.display(result)
         }
-        portfolioViewController.onUpdatePortfolioCommand += {
+        portfolioDialog.onUpdatePortfolioCommand = {
             upc.handle(it)
             val result = pqh.handle(PortfolioQuery())
-            portfolioViewController.display(result)
+            portfolioDialog.display(result)
         }
-        portfolioViewController.onBuy += {
-            // TODO Dialog öffnen
+        portfolioDialog.onSellStockCommand = {
+            ssc.handle(it)
         }
-        candidateStocksViewController.onCandidateStocksQuery += {
+        portfolioDialog.onCandidateStocksQuery = {
             val result = csq.handle(it)
-            candidateStocksViewController.display(result)
+            portfolioDialog.display(result)
         }
-        candidateStocksViewController.onBuyStockCommand += {
+        portfolioDialog.onBuyStockCommand = {
             bsc.handle(it)
-            // TODO Dialog schließen
         }
 
         // Run
-        stage.show()
+        portfolioDialog.show()
     }
 }
 
