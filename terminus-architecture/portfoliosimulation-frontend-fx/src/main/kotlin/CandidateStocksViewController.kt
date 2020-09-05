@@ -1,18 +1,32 @@
 package de.muspellheim.portfoliosimulation.frontend.fx
 
-import de.muspellheim.portfoliosimulation.contract.data.messages.commands.*
-import de.muspellheim.portfoliosimulation.contract.data.messages.queries.*
-import javafx.beans.property.*
-import javafx.concurrent.*
-import javafx.scene.control.*
-import javafx.util.converter.*
-import java.time.*
-import java.util.concurrent.*
+import de.muspellheim.portfoliosimulation.contract.messages.commands.buystock.BuyStockCommand
+import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.CandidateStocksQuery
+import de.muspellheim.portfoliosimulation.contract.messages.queries.candidatestocks.CandidateStocksQueryResult
+import de.muspellheim.portfoliosimulation.frontend.fx.util.Action
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.concurrent.Task
+import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
+import javafx.scene.control.Button
+import javafx.scene.control.Label
+import javafx.scene.control.TableView
+import javafx.scene.control.TextField
+import javafx.util.converter.NumberStringConverter
+import java.time.LocalDate
+import java.util.concurrent.ForkJoinPool
 
-class CandidateStocksViewController constructor(
-        private val messageHandling: MessageHandling,
-        private val onBuyed: () -> Unit
-) {
+fun createCandidateStocksViewController(): CandidateStocksViewController {
+    val url = PortfolioViewController::class.java.getResource("CandidateStocksView.fxml")
+    val loader = FXMLLoader(url)
+    loader.load<Parent>()
+    return loader.getController()
+}
+
+class CandidateStocksViewController {
+    val onCandidateStocksQuery = Action<CandidateStocksQuery>()
+    val onBuyStockCommand = Action<BuyStockCommand>()
+
     lateinit var identificationText: TextField
     lateinit var placeholderLabel: Label
     lateinit var searchButton: Button
@@ -36,24 +50,26 @@ class CandidateStocksViewController constructor(
 
     fun buy() {
         val toBuy = candidatesTable.selectionModel.selectedItem
-        messageHandling.handle(
-                BuyStockCommand(
-                        stockName = toBuy.name,
-                        stockSymbol = toBuy.symbol,
-                        stockPriceCurrency = toBuy.currency,
-                        qty = qtyProperty.value,
-                        stockPrice = toBuy.price,
-                        bought = LocalDate.now()
-                )
+        onBuyStockCommand(
+            BuyStockCommand(
+                stockName = toBuy.name,
+                stockSymbol = toBuy.symbol,
+                stockPriceCurrency = toBuy.currency,
+                qty = qtyProperty.value,
+                stockPrice = toBuy.price,
+                bought = LocalDate.now()
+            )
         )
-        onBuyed()
     }
 
-    private fun displayBuyCandidates(candidateStocks: CandidateStocksQueryResult) {
+    fun display(candidateStocks: CandidateStocksQueryResult) {
         candidatesTable.items.setAll(candidateStocks.candidates)
+        searchButton.isDisable = false
+        searchingLabel.isVisible = false
+        placeholderLabel.isVisible = true
     }
 
-    private inner class SearchTask : Task<CandidateStocksQueryResult>() {
+    private inner class SearchTask : Task<Unit>() {
         init {
             candidatesTable.items.clear()
             placeholderLabel.isVisible = false
@@ -62,15 +78,8 @@ class CandidateStocksViewController constructor(
             searchingLabel.isVisible = true
         }
 
-        override fun call(): CandidateStocksQueryResult {
-            return messageHandling.handle(CandidateStocksQuery(identificationText.text))
-        }
-
-        override fun succeeded() {
-            displayBuyCandidates(value)
-            searchButton.isDisable = false
-            searchingLabel.isVisible = false
-            placeholderLabel.isVisible = true
+        override fun call() {
+            onCandidateStocksQuery(CandidateStocksQuery(identificationText.text))
         }
     }
 }

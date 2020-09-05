@@ -40,7 +40,13 @@ class AppFx : Application() {
     }
 
     override fun start(stage: Stage) {
+        // Build
         val portfolioViewController = createPortfolioViewController()
+        val candidateStocksViewController= createCandidateStocksViewController()
+        stage.title = "Portfolio Simulation"
+        stage.scene = Scene(portfolioViewController.view, 1280.0, 680.0)
+
+        // Bind
         portfolioViewController.onPortfolioQuery += {
             val result = pqh.handle(it)
             portfolioViewController.display(result)
@@ -48,13 +54,21 @@ class AppFx : Application() {
         portfolioViewController.onUpdatePortfolioCommand += {
             upc.handle(it)
             val result = pqh.handle(PortfolioQuery())
-            portfolioViewController.display(result);
+            portfolioViewController.display(result)
+        }
+        portfolioViewController.onBuy += {
+            // TODO Dialog öffnen
+        }
+        candidateStocksViewController.onCandidateStocksQuery += {
+            val result = csq.handle(it)
+            candidateStocksViewController.display(result)
+        }
+        candidateStocksViewController.onBuyStockCommand += {
+            bsc.handle(it)
+            // TODO Dialog schließen
         }
 
-        // TODO: Bind
-
-        stage.title = "Portfolio Simulation"
-        stage.scene = Scene(portfolioViewController.view, 1280.0, 680.0)
+        // Run
         stage.show()
     }
 }

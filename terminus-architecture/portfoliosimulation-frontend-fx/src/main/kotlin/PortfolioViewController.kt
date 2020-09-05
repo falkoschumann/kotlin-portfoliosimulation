@@ -22,8 +22,7 @@ class PortfolioViewController {
     val onPortfolioQuery = Action<PortfolioQuery>()
     val onSellStockCommand = Action<SellStockCommand>()
     val onUpdatePortfolioCommand = Action<UpdatePortfolioCommand>()
-
-    private val onBuy: (onBuyed: () -> Unit) -> Unit
+    val onBuy = Action<Unit>()
 
     lateinit var view: Parent
     lateinit var updateButton: Button
@@ -36,7 +35,8 @@ class PortfolioViewController {
 
     fun initialize() {
         sellButton.disableProperty().bind(stocksTable.selectionModel.selectedItemProperty().isNull)
-        refresh()
+
+        onPortfolioQuery(PortfolioQuery())
     }
 
     fun update() {
@@ -44,17 +44,12 @@ class PortfolioViewController {
     }
 
     fun buy() {
-        onBuy { refresh() }
+        onBuy(Unit)
     }
 
     fun sell() {
         val symbol = stocksTable.selectionModel.selectedItem.symbol
         onSellStockCommand(SellStockCommand(symbol))
-        refresh()
-    }
-
-    private fun refresh() {
-        onPortfolioQuery(PortfolioQuery())
     }
 
     fun display(portfolio: PortfolioQueryResult) {
