@@ -1,0 +1,3 @@
+package de.muspellheim.portfoliosimulation.contract.messages.commands
+
+class UpdatePortfolioCommand
