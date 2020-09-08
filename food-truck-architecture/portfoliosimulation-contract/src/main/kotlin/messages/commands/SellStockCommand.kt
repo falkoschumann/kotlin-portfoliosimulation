@@ -1,3 +1,5 @@
 package de.muspellheim.portfoliosimulation.contract.messages.commands
 
-data class SellStockCommand(val stockSymbol: String)
+import de.muspellheim.portfoliosimulation.messagehandling.*
+
+data class SellStockCommand(val stockSymbol: String) : Command

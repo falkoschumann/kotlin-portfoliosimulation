@@ -1,12 +1,14 @@
 package de.muspellheim.portfoliosimulation.contract.messages.queries
 
-class PortfolioQuery()
+import de.muspellheim.portfoliosimulation.messagehandling.*
+
+class PortfolioQuery : Query
 
 data class PortfolioQueryResult(
     val stocks: List<StockInfo>,
     val portfolioValue: Double,
     val portfolioRateOfReturn: Double
-) {
+) : QueryResult {
     data class StockInfo(
         val name: String,
         val symbol: String,
