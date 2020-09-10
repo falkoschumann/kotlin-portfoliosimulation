@@ -22,21 +22,21 @@ class BuyStockCommandProcessor : MessageProcessor {
     override fun process(input: Message, model: MessageContext): Output {
         val cmd = input as BuyStockCommand
         return CommandOutput(
-                Success(),
-                listOf(
-                        StockBought(
-                                name = cmd.stockName,
-                                symbol = cmd.stockSymbol,
-                                currency = cmd.stockPriceCurrency,
-                                qty = cmd.qty,
-                                price = cmd.stockPrice,
-                                timestamp = LocalDateTime.of(cmd.bought, LocalTime.MIN).atZone(ZoneId.systemDefault()).toInstant()
-                        ),
-                        StockPriceUpdated(
-                                symbol = cmd.stockSymbol,
-                                price = cmd.stockPrice
-                        )
+            Success(),
+            listOf(
+                StockBought(
+                    name = cmd.stockName,
+                    symbol = cmd.stockSymbol,
+                    currency = cmd.stockPriceCurrency,
+                    qty = cmd.qty,
+                    price = cmd.stockPrice,
+                    timestamp = LocalDateTime.of(cmd.bought, LocalTime.MIN).atZone(ZoneId.systemDefault()).toInstant()
+                ),
+                StockPriceUpdated(
+                    symbol = cmd.stockSymbol,
+                    price = cmd.stockPrice
                 )
+            )
         )
     }
 }

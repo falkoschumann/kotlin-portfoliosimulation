@@ -10,9 +10,11 @@ typealias Action<I> = (arg: I) -> Unit
 
 interface MessagePump {
     fun register(ctxManager: MessageContextManager, processor: MessageProcessor)
-    fun register(load: Func<Message, MessageContext>,
-                 process: Func2<Message, MessageContext, Output>,
-                 update: Action<List<Event>>)
+    fun register(
+        load: Func<Message, MessageContext>,
+        process: Func2<Message, MessageContext, Output>,
+        update: Action<List<Event>>
+    )
 
     fun handle(inputMessage: Message)
 }
