@@ -1,3 +1,0 @@
-package de.muspellheim.portfoliosimulation.messagehandling.pipeline.messagecontext
-
-interface MessageContextManager : MessageContextLoader, MessageContextBuilder

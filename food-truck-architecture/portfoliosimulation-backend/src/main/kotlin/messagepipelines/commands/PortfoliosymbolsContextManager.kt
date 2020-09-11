@@ -3,7 +3,7 @@ package de.muspellheim.portfoliosimulation.backend.messagepipelines.commands
 import de.muspellheim.portfoliosimulation.backend.events.*
 import de.muspellheim.portfoliosimulation.eventstore.*
 import de.muspellheim.portfoliosimulation.messagehandling.*
-import de.muspellheim.portfoliosimulation.messagehandling.pipeline.messagecontext.*
+import de.muspellheim.portfoliosimulation.messagehandling.pipeline.*
 
 open class PortfoliosymbolsContextManager(
     es: EventStore,
