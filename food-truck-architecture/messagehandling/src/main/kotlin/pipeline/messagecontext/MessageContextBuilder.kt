@@ -3,5 +3,5 @@ package de.muspellheim.portfoliosimulation.messagehandling.pipeline.messageconte
 import de.muspellheim.portfoliosimulation.eventstore.*
 
 interface MessageContextBuilder {
-    fun update(events: Sequence<Event>)
+    fun update(events: Iterable<Event>)
 }

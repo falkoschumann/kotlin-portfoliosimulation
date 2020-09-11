@@ -15,14 +15,14 @@ class BuyStockCommandContextManager : MessageContextManager {
         return BuyStockCommandContextModel()
     }
 
-    override fun update(events: Sequence<Event>) {}
+    override fun update(events: Iterable<Event>) {}
 }
 
 class BuyStockCommandProcessor : MessageProcessor {
     override fun process(input: Message, model: MessageContext): Output {
         val cmd = input as BuyStockCommand
         return CommandOutput(
-            Success(),
+            Success,
             listOf(
                 StockBought(
                     name = cmd.stockName,

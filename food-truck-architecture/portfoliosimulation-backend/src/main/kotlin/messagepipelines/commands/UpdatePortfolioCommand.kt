@@ -19,6 +19,6 @@ class UpdatePortfolioCommandProcessor(private val ex: StockExchangeProvider) : M
         val currentPrices = ex.getPrice(cmdModel.values.toList())
         val events = currentPrices.map { StockPriceUpdated(symbol = it.first, price = it.second) }
 
-        return CommandOutput(Success(), events)
+        return CommandOutput(Success, events)
     }
 }

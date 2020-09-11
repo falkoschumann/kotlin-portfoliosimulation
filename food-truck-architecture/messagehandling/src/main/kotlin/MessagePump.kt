@@ -16,5 +16,5 @@ interface MessagePump {
         update: Action<List<Event>>
     )
 
-    fun handle(inputMessage: Message)
+    fun handle(inputMessage: Message): Message
 }

@@ -19,7 +19,7 @@ open class PortfoliosymbolsContextManager(
         return contextModelType.getDeclaredConstructor(Set::class.java).newInstance(symbolsInPortfolio)
     }
 
-    final override fun update(events: Sequence<Event>) {
+    final override fun update(events: Iterable<Event>) {
         events.forEach {
             when (it) {
                 is StockBought -> symbolsInPortfolio.add(it.symbol)

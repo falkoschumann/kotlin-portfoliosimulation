@@ -14,7 +14,7 @@ interface Query : Request
 
 interface CommandStatus : Response
 
-class Success : CommandStatus
+object Success : CommandStatus
 
 data class Failure(val errorMessage: String) : CommandStatus
 

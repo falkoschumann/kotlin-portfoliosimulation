@@ -19,7 +19,7 @@ class SellStockCommandProcessor : MessageProcessor {
 
         if (cmdModel.values.contains(cmd.stockSymbol)) {
             return CommandOutput(
-                Success(),
+                Success,
                 listOf(
                     StockSold(symbol = cmd.stockSymbol)
                 )
