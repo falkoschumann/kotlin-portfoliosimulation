@@ -4,6 +4,6 @@ interface EventStore {
     val onRecorded: Action<List<Event>>
     fun record(event: Event)
     fun record(events: List<Event>)
-    fun replay(): Sequence<Event>
+    fun replay(): Iterable<Event>
     fun replay(vararg eventTypes: Class<out Event>): Iterable<Event>
 }

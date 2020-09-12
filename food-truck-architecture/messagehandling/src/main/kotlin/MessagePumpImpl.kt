@@ -2,7 +2,6 @@ package de.muspellheim.portfoliosimulation.messagehandling
 
 import de.muspellheim.portfoliosimulation.eventstore.*
 import de.muspellheim.portfoliosimulation.messagehandling.pipeline.*
-import de.muspellheim.portfoliosimulation.messagehandling.pipeline.messagecontext.*
 
 class MessagePumpImpl(private val es: EventStore) : MessagePump {
     private val messagePipelineDirectory = mutableMapOf<Class<Message>, Pipeline>()

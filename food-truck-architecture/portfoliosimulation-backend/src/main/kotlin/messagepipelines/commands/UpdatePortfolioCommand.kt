@@ -5,7 +5,6 @@ import de.muspellheim.portfoliosimulation.contract.*
 import de.muspellheim.portfoliosimulation.eventstore.*
 import de.muspellheim.portfoliosimulation.messagehandling.*
 import de.muspellheim.portfoliosimulation.messagehandling.pipeline.*
-import de.muspellheim.portfoliosimulation.messagehandling.pipeline.messagecontext.*
 
 class UpdatePortfolioCommandContextModel(values: Set<String>) : PortfoliosymbolsContextModel(values)
 
