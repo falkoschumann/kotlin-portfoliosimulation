@@ -9,11 +9,12 @@ import de.muspellheim.portfoliosimulation.eventstore.*
 import de.muspellheim.portfoliosimulation.frontend.*
 import de.muspellheim.portfoliosimulation.messagehandling.*
 import de.muspellheim.portfoliosimulation.messagehandling.pipeline.*
+import java.nio.file.*
 
 fun main() {
     val ex: StockExchangeProvider = StockExchangeProviderImpl()
 
-    val es: EventStore = EventStoreImpl("eventstream.db")
+    val es: EventStore = EventStoreImpl(Paths.get("eventstream.db"))
     val msgpump: MessagePump = MessagePumpImpl(es)
     var mcm: MessageContextManager
     var mp: MessageProcessor

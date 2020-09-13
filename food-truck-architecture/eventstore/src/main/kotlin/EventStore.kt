@@ -1,6 +1,8 @@
 package de.muspellheim.portfoliosimulation.eventstore
 
-interface EventStore {
+import java.io.*
+
+interface EventStore : Closeable {
     val onRecorded: Action<List<Event>>
     fun record(event: Event)
     fun record(events: List<Event>)

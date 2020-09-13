@@ -2,7 +2,6 @@ package de.muspellheim.portfoliosimulation.messagehandling
 
 import de.muspellheim.portfoliosimulation.eventstore.*
 import de.muspellheim.portfoliosimulation.messagehandling.pipeline.*
-import de.muspellheim.portfoliosimulation.messagehandling.pipeline.messagecontext.*
 
 typealias Func<I, O> = (arg: I) -> O
 typealias Func2<I1, I2, O> = (arg1: I1, arg2: I2) -> O
