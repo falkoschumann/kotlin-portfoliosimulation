@@ -1,6 +1,7 @@
 package de.muspellheim.portfoliosimulation
 
 import de.muspellheim.portfoliosimulation.backend.adapters.*
+import de.muspellheim.portfoliosimulation.backend.events.*
 import de.muspellheim.portfoliosimulation.backend.messagepipelines.commands.*
 import de.muspellheim.portfoliosimulation.backend.messagepipelines.queries.*
 import de.muspellheim.portfoliosimulation.contract.*
@@ -10,12 +11,22 @@ import de.muspellheim.portfoliosimulation.eventstore.*
 import de.muspellheim.portfoliosimulation.frontend.*
 import de.muspellheim.portfoliosimulation.messagehandling.*
 import de.muspellheim.portfoliosimulation.messagehandling.pipeline.*
+import kotlinx.serialization.json.*
+import kotlinx.serialization.modules.*
 import java.nio.file.*
 
 fun main() {
     val ex: StockExchangeProvider = StockExchangeProviderImpl()
 
-    val es: EventStore = EventStoreImpl(Paths.get("eventstream.db"))
+    val module = SerializersModule {
+        polymorphic(Event::class) {
+            subclass(StockBought::class)
+            subclass(StockPriceUpdated::class)
+            subclass(StockSold::class)
+        }
+    }
+    val json = Json { serializersModule = module }
+    val es: EventStore = EventStoreImpl(Paths.get("eventstream.db"), json)
     val msgpump: MessagePump = MessagePumpImpl(es)
     var mcm: MessageContextManager
     var mp: MessageProcessor

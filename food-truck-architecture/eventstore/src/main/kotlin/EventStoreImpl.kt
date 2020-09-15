@@ -6,7 +6,7 @@ import java.nio.charset.*
 import java.nio.file.*
 import kotlin.streams.*
 
-class EventStoreImpl(private val path: Path) : EventStore {
+class EventStoreImpl(private val path: Path, private val json: Json) : EventStore {
     override val onRecorded = Action<List<Event>>()
 
     init {
@@ -37,11 +37,11 @@ class EventStoreImpl(private val path: Path) : EventStore {
     }
 
     private fun store(event: Event, index: Long) {
-        val text = Json.encodeToString(event)
+        val text = json.encodeToString(event)
         write(text, index)
     }
 
-    private fun write(text:String, index:Long) {
+    private fun write(text: String, index: Long) {
         val filename = String.format("%d8", index)
         val filepath = path.resolve("${filename}.txt")
         Files.writeString(filepath, text, StandardCharsets.UTF_8)
@@ -49,7 +49,7 @@ class EventStoreImpl(private val path: Path) : EventStore {
 
     private fun load(file: Path): Event {
         val text = Files.readString(file)
-        return Json.decodeFromString(text)
+        return json.decodeFromString(text)
     }
 
     override fun close() {}
