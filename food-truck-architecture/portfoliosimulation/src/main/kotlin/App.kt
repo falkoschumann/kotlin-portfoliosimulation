@@ -4,6 +4,7 @@ import de.muspellheim.portfoliosimulation.backend.adapters.*
 import de.muspellheim.portfoliosimulation.backend.messagepipelines.commands.*
 import de.muspellheim.portfoliosimulation.backend.messagepipelines.queries.*
 import de.muspellheim.portfoliosimulation.contract.*
+import de.muspellheim.portfoliosimulation.contract.messages.commands.*
 import de.muspellheim.portfoliosimulation.contract.messages.queries.*
 import de.muspellheim.portfoliosimulation.eventstore.*
 import de.muspellheim.portfoliosimulation.frontend.*
@@ -21,27 +22,27 @@ fun main() {
 
     mcm = BuyStockCommandContextManager()
     mp = BuyStockCommandProcessor()
-    msgpump.register(mcm, mp)
+    msgpump.register(BuyStockCommand::class.java, mcm, mp)
 
     mcm = SellStockCommandContextManager(es)
     mp = SellStockCommandProcessor()
-    msgpump.register(mcm, mp)
+    msgpump.register(SellStockCommand::class.java, mcm, mp)
 
     mcm = UpdatePortfolioCommandContextManager(es)
     mp = UpdatePortfolioCommandProcessor(ex)
-    msgpump.register(mcm, mp)
+    msgpump.register(UpdatePortfolioCommand::class.java, mcm, mp)
 
     mcm = CandidateStocksQueryContextManager()
     mp = CandidateStocksQueryProcessor(ex)
-    msgpump.register(mcm, mp)
+    msgpump.register(CandidateStocksQuery::class.java, mcm, mp)
 
     mcm = PortfolioQueryContextManager(es)
     mp = PortfolioQueryProcessor()
-    msgpump.register(mcm, mp)
+    msgpump.register(PortfolioQuery::class.java, mcm, mp)
 
     mcm = PortfolioStockQueryContextManager(es)
     mp = PortfolioStockQueryProcessor()
-    msgpump.register(mcm, mp)
+    msgpump.register(PortfolioStockQuery::class.java, mcm, mp)
 
     val frontend = UserInterface()
 

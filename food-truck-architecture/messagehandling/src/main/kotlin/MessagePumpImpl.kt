@@ -4,20 +4,24 @@ import de.muspellheim.portfoliosimulation.eventstore.*
 import de.muspellheim.portfoliosimulation.messagehandling.pipeline.*
 
 class MessagePumpImpl(private val es: EventStore) : MessagePump {
-    private val messagePipelineDirectory = mutableMapOf<Class<Message>, Pipeline>()
+    private val messagePipelineDirectory = mutableMapOf<Class<out Message>, Pipeline>()
 
-    override fun register(ctxManager: MessageContextManager, processor: MessageProcessor) {
-        register(ctxManager::load, processor::process, ctxManager::update)
+    override fun register(
+            messageType: Class<out Message>,
+            ctxManager: MessageContextManager,
+            processor: MessageProcessor
+    ) {
+        register(messageType, ctxManager::load, processor::process, ctxManager::update)
     }
 
     override fun register(
-        load: Func<Message, MessageContext>,
-        process: Func2<Message, MessageContext, Output>,
-        update: Action<List<Event>>
+            messageType: Class<out Message>,
+            load: Func<Message, MessageContext>,
+            process: Func2<Message, MessageContext, Output>,
+            update: Action<List<Event>>
     ) {
-        // TODO Determine Message type?
-        messagePipelineDirectory[Message::class.java] =
-            Pipeline(loadContext = load, process = process, updateContext = update)
+        messagePipelineDirectory[messageType] =
+                Pipeline(loadContext = load, process = process, updateContext = update)
     }
 
     override fun handle(inputMessage: Message): Message {
@@ -52,7 +56,7 @@ class MessagePumpImpl(private val es: EventStore) : MessagePump {
 }
 
 private data class Pipeline(
-    val loadContext: Func<Message, MessageContext>,
-    val process: Func2<Message, MessageContext, Output>,
-    val updateContext: Action<List<Event>>
+        val loadContext: Func<Message, MessageContext>,
+        val process: Func2<Message, MessageContext, Output>,
+        val updateContext: Action<List<Event>>
 )
