@@ -20,8 +20,8 @@ class EventStoreImpl(private val path: Path, private val json: Json) : EventStor
     }
 
     override fun record(events: List<Event>) {
-        val index = Files.list(path).filter { it.toString().endsWith(".txt") }.count()
-        events.forEach { store(it, index + 1) }
+        var index = Files.list(path).filter { it.toString().endsWith(".txt") }.count()
+        events.forEach { store(it, ++index) }
         onRecorded(events)
     }
 

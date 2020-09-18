@@ -36,9 +36,10 @@ class MessagePumpImpl(private val es: EventStore) : MessagePump {
     }
 
     private fun dispatch(output: Output): Message {
+        println(output)
         return when (output) {
             is CommandOutput -> {
-                es.record((output.events))
+                es.record(output.events)
                 updateContext(output.events)
                 output.status
             }
