@@ -1,0 +1,7 @@
+{
+  "type": "de.muspellheim.portfoliosimulation.backend.events.StockPriceUpdated",
+  "symbol": "FBOK34.SAO",
+  "price": 387.94,
+  "id": "7b84023f-0dc9-4211-94ab-cc60a2f453b5",
+  "timestamp": "2019-07-20T19:29:50.7283245+02:00"
+}

@@ -1,0 +1,10 @@
+{
+  "type": "de.muspellheim.portfoliosimulation.backend.events.StockBought",
+  "name": "Sony Corporation",
+  "symbol": "SNE",
+  "currency": "USD",
+  "qty": 10,
+  "price": 53.66,
+  "id": "a459a046-77b6-4c28-8319-ba1241c399b8",
+  "timestamp": "2019-07-20T19:24:09.263198+02:00"
+}

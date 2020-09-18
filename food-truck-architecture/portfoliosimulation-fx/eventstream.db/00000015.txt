@@ -1,0 +1,10 @@
+{
+  "type": "de.muspellheim.portfoliosimulation.backend.events.StockBought",
+  "name": "Bayer Aktiengesellschaft",
+  "symbol": "BAYRY",
+  "currency": "USD",
+  "qty": 30,
+  "price": 16.74,
+  "id": "df06ade2-f7a6-404b-b6b7-8c3536ee6cd7",
+  "timestamp": "2019-07-20T19:34:18.0704688+02:00"
+}

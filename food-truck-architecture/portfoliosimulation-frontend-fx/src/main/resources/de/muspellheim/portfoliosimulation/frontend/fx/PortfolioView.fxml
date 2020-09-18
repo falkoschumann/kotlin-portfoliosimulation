@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox fx:id="view" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="de.muspellheim.portfoliosimulation.frontend.fx.PortfolioViewController">
+    <ToolBar>
+        <Button fx:id="updateButton" text="Update" onAction="#update" />
+        <Button text="Buy" onAction="#buy" />
+        <Button fx:id="sellButton" text="Sell" onAction="#sell" />
+    </ToolBar>
+    <TableView fx:id="stocksTable" VBox.vgrow="ALWAYS">
+        <placeholder>
+            <StackPane>
+                <Label fx:id="placeholderLabel" text="Empty portfolio!" />
+                <Label fx:id="updatingLabel" text="Updating..." visible="false">
+                    <graphic>
+                        <ProgressIndicator />
+                    </graphic>
+                </Label>
+            </StackPane>
+        </placeholder>
+        <columns>
+            <TableColumn text="Name" prefWidth="400">
+                <cellValueFactory>
+                    <PropertyValueFactory property="name" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Symbol">
+                <cellValueFactory>
+                    <PropertyValueFactory property="symbol" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Currency">
+                <cellValueFactory>
+                    <PropertyValueFactory property="currency" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn style="-fx-alignment: baseline-right" text="Qty">
+                <cellValueFactory>
+                    <PropertyValueFactory property="qty" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn style="-fx-alignment: baseline-right" text="Buying Price">
+                <cellValueFactory>
+                    <PropertyValueFactory property="buyingPrice" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn style="-fx-alignment: baseline-right" text="Buying Value">
+                <cellValueFactory>
+                    <PropertyValueFactory property="buyingValue" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn style="-fx-alignment: baseline-right" text="Current Price">
+                <cellValueFactory>
+                    <PropertyValueFactory property="currentPrice" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn style="-fx-alignment: baseline-right" text="Current Value">
+                <cellValueFactory>
+                    <PropertyValueFactory property="currentValue" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn style="-fx-alignment: baseline-right" text="Return">
+                <cellValueFactory>
+                    <PropertyValueFactory property="returnValue" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn style="-fx-alignment: baseline-right" text="Rate of Return">
+                <cellValueFactory>
+                    <PropertyValueFactory property="rateOfReturn" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+    </TableView>
+    <HBox alignment="CENTER_LEFT" spacing="5.0">
+        <Label text="Portfolio value:" />
+        <TextField fx:id="portfolioValueText" editable="false" style="-fx-alignment: baseline-right" />
+        <Label text="Portfolio rate of return:" />
+        <TextField fx:id="portfolioRateOfReturnText" editable="false" style="-fx-alignment: baseline-right" />
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        </padding>
+    </HBox>
+</VBox>

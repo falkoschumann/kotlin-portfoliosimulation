@@ -1,0 +1,7 @@
+{
+  "type": "de.muspellheim.portfoliosimulation.backend.events.StockPriceUpdated",
+  "symbol": "AAPL",
+  "price": 202.59,
+  "id": "1846afcb-f8a2-4096-b7c1-ec37ce5b7a6d",
+  "timestamp": "2019-07-20T19:27:38.9440126+02:00"
+}

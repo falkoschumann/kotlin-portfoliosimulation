@@ -1,0 +1,10 @@
+{
+  "type": "de.muspellheim.portfoliosimulation.backend.events.StockBought",
+  "name": "JUNGHEINRICH AG O.N.VZO",
+  "symbol": "JUN3.HAM",
+  "currency": "EUR",
+  "qty": 7,
+  "price": 23.84,
+  "id": "9d12ce38-3f92-4d5b-bc1b-177cfbed6f7a",
+  "timestamp": "2019-07-20T19:25:42.7834991+02:00"
+}

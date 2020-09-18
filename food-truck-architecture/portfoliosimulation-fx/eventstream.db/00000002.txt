@@ -1,0 +1,7 @@
+{
+  "type": "de.muspellheim.portfoliosimulation.backend.events.StockPriceUpdated",
+  "symbol": "SNE",
+  "price": 53.66,
+  "id": "5bff4126-05b2-4f92-b88a-cc48a1e4a395",
+  "timestamp": "2019-07-20T19:24:09.2647598+02:00"
+}

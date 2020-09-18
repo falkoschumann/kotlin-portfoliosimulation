@@ -1,0 +1,7 @@
+{
+  "type": "de.muspellheim.portfoliosimulation.backend.events.StockPriceUpdated",
+  "symbol": "JUN3.HAM",
+  "price": 23.84,
+  "id": "0b9054b8-da6f-4c4e-ac79-a322ea9cfd75",
+  "timestamp": "2019-07-20T19:25:42.7835258+02:00"
+}

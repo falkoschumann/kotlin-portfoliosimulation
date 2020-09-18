@@ -3,9 +3,9 @@ include(
     "eventstore",
     "messagehandling",
     "portfoliosimulation",
-//    "portfoliosimulation-fx",
+    "portfoliosimulation-fx",
     "portfoliosimulation-contract",
     "portfoliosimulation-backend",
-    "portfoliosimulation-frontend"
-//    "portfoliosimulation-frontend-fx"
+    "portfoliosimulation-frontend",
+    "portfoliosimulation-frontend-fx"
 )
