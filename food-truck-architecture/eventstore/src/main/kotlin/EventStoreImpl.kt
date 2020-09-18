@@ -20,7 +20,7 @@ class EventStoreImpl(private val path: Path, private val json: Json) : EventStor
     }
 
     override fun record(events: List<Event>) {
-        val index = Files.list(path).count()
+        val index = Files.list(path).filter { it.toString().endsWith(".txt") }.count()
         events.forEach { store(it, index + 1) }
         onRecorded(events)
     }
@@ -42,7 +42,7 @@ class EventStoreImpl(private val path: Path, private val json: Json) : EventStor
     }
 
     private fun write(text: String, index: Long) {
-        val filename = String.format("%d8", index)
+        val filename = String.format("%08d", index)
         val filepath = path.resolve("${filename}.txt")
         Files.writeString(filepath, text, StandardCharsets.UTF_8)
     }

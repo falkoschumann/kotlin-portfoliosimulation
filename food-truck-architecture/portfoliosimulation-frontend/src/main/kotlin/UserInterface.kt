@@ -73,7 +73,7 @@ class UserInterface {
         displaySellCandidates(candidates)
         letUserSelectByIndex("Enter index of stock to sell: ") { index ->
             val toSell = candidates.matchingStocks[index]
-            command = SellStockCommand(stockSymbol = toSell.second)
+            command = SellStockCommand(stockSymbol = toSell.first)
         }
 
         return command

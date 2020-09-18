@@ -25,7 +25,10 @@ fun main() {
             subclass(StockSold::class)
         }
     }
-    val json = Json { serializersModule = module }
+    val json = Json {
+        serializersModule = module
+        prettyPrint = true
+    }
     val es: EventStore = EventStoreImpl(Paths.get("eventstream.db"), json)
     val msgpump: MessagePump = MessagePumpImpl(es)
     var mcm: MessageContextManager
